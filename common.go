@@ -1,8 +1,10 @@
 package wanikaniapi
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -128,7 +130,7 @@ func NewClient(config *ClientConfig) *Client {
 	}
 }
 
-func (c *Client) request(method, path, query string, data interface{}) error {
+func (c *Client) request(method, path, query string, reqData interface{}, respData interface{}) error {
 	url := c.baseURL + path
 	if query != "" {
 		url += "?" + query
@@ -136,13 +138,25 @@ func (c *Client) request(method, path, query string, data interface{}) error {
 
 	c.Logger.Debugf("Requesting URL: %v (revision: %v)", url, WaniKaniRevision)
 
-	req, err := http.NewRequest(method, url, nil)
+	var reqReader io.Reader
+	if reqData != nil {
+		reqBytes, err := json.Marshal(reqData)
+		if err != nil {
+			return err
+		}
+		reqReader = bytes.NewReader(reqBytes)
+	}
+
+	req, err := http.NewRequest(method, url, reqReader)
 	if err != nil {
 		return err
 	}
 
 	req.Header.Set("Authorization", "Bearer "+c.APIToken)
 	req.Header.Set("Wanikani-Revision", WaniKaniRevision)
+	if reqReader != nil {
+		req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	}
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -154,12 +168,12 @@ func (c *Client) request(method, path, query string, data interface{}) error {
 		return fmt.Errorf("Unexpected status from API: %v", resp.Status)
 	}
 
-	bytes, err := ioutil.ReadAll(resp.Body)
+	respBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil
 	}
 
-	err = json.Unmarshal(bytes, data)
+	err = json.Unmarshal(respBytes, respData)
 	if err != nil {
 		return err
 	}

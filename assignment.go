@@ -17,13 +17,13 @@ import (
 
 func (c *Client) AssignmentGet(params *AssignmentGetParams) (*Assignment, error) {
 	obj := &Assignment{}
-	err := c.request("GET", "/v2/assignments/"+strconv.Itoa(int(*params.ID)), "", obj)
+	err := c.request("GET", "/v2/assignments/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
 	return obj, err
 }
 
 func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, error) {
 	obj := &AssignmentPage{}
-	err := c.request("GET", "/v2/assignments", params.EncodeToQuery(), obj)
+	err := c.request("GET", "/v2/assignments", params.EncodeToQuery(), nil, obj)
 	return obj, err
 }
 

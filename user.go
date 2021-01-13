@@ -16,7 +16,7 @@ import (
 
 func (c *Client) UserGet(params *UserGetParams) (*User, error) {
 	obj := &User{}
-	err := c.request("GET", "/v2/user", "", obj)
+	err := c.request("GET", "/v2/user", "", nil, obj)
 	return obj, err
 }
 

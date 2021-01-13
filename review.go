@@ -17,13 +17,13 @@ import (
 
 func (c *Client) ReviewGet(params *ReviewGetParams) (*Review, error) {
 	obj := &Review{}
-	err := c.request("GET", "/v2/reviews/"+strconv.FormatInt(int64(*params.ID), 10), "", obj)
+	err := c.request("GET", "/v2/reviews/"+strconv.FormatInt(int64(*params.ID), 10), "", nil, obj)
 	return obj, err
 }
 
 func (c *Client) ReviewList(params *ReviewListParams) (*ReviewPage, error) {
 	obj := &ReviewPage{}
-	err := c.request("GET", "/v2/reviews", params.EncodeToQuery(), obj)
+	err := c.request("GET", "/v2/reviews", params.EncodeToQuery(), nil, obj)
 	return obj, err
 }
 
