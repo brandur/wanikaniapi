@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"net/url"
 	"strconv"
+	"time"
 )
+
+type ID int64
 
 type ListParams struct {
 	PageAfterID  *ID
@@ -28,6 +31,15 @@ type ListParamsInterface interface {
 	EncodeToQuery() string
 }
 
+type Object struct {
+	DataUpdatedAt time.Time  `json:"data_updated_at"`
+	ID            ID         `json:"id"`
+	ObjectType    ObjectType `json:"object"`
+	URL           string     `json:"url"`
+}
+
+type ObjectType string
+
 type PageObject struct {
 	Object
 
@@ -38,6 +50,18 @@ type PageObject struct {
 		PerPage     int    `json:"per_page"`
 		PreviousURL string `json:"previous_url"`
 	} `json:"pages"`
+}
+
+func Bool(b bool) *bool {
+	return &b
+}
+
+func Int(i int) *int {
+	return &i
+}
+
+func Time(t time.Time) *time.Time {
+	return &t
 }
 
 func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
@@ -87,4 +111,46 @@ func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
 	}
 
 	return nil
+}
+
+func joinIDs(ids []ID, separator string) string {
+	var s string
+
+	for i, n := range ids {
+		if i != 0 {
+			s += ","
+		}
+
+		s += strconv.FormatInt(int64(n), 10)
+	}
+
+	return s
+}
+
+func joinInts(ints []int, separator string) string {
+	var s string
+
+	for i, n := range ints {
+		if i != 0 {
+			s += ","
+		}
+
+		s += strconv.Itoa(n)
+	}
+
+	return s
+}
+
+func joinStrings(strs []string, separator string) string {
+	var s string
+
+	for i, str := range strs {
+		if i != 0 {
+			str += ","
+		}
+
+		s += str
+	}
+
+	return s
 }
