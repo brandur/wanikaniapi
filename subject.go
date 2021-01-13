@@ -228,13 +228,13 @@ type SubjectPage struct {
 	Data []*Subject `json:"data"`
 }
 
-func (c *Client) GetSubject(params *SubjectGetParams) (*Subject, error) {
+func (c *Client) SubjectGet(params *SubjectGetParams) (*Subject, error) {
 	obj := &Subject{}
 	err := c.request("GET", "/v2/subjects/"+strconv.FormatInt(int64(*params.ID), 10), "", obj)
 	return obj, err
 }
 
-func (c *Client) ListSubjects(params *SubjectListParams) (*SubjectPage, error) {
+func (c *Client) SubjectList(params *SubjectListParams) (*SubjectPage, error) {
 	obj := &SubjectPage{}
 	err := c.request("GET", "/v2/subjects", params.EncodeToQuery(), obj)
 	return obj, err

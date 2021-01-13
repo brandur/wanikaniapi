@@ -60,13 +60,13 @@ type ReviewPage struct {
 	Data []*Review `json:"data"`
 }
 
-func (c *Client) GetReview(params *ReviewGetParams) (*Review, error) {
+func (c *Client) ReviewGet(params *ReviewGetParams) (*Review, error) {
 	obj := &Review{}
 	err := c.request("GET", "/v2/reviews/"+strconv.FormatInt(int64(*params.ID), 10), "", obj)
 	return obj, err
 }
 
-func (c *Client) ListReviews(params *ReviewListParams) (*ReviewPage, error) {
+func (c *Client) ReviewList(params *ReviewListParams) (*ReviewPage, error) {
 	obj := &ReviewPage{}
 	err := c.request("GET", "/v2/reviews", params.EncodeToQuery(), obj)
 	return obj, err

@@ -10,7 +10,7 @@ import (
 
 func TestListSubjects(t *testing.T) {
 	client := wktesting.TestClient()
-	subjects, err := client.ListSubjects(&wanikaniapi.SubjectListParams{
+	subjects, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 		ListParams: &wanikaniapi.ListParams{},
 	})
 	assert.NoError(t, err)

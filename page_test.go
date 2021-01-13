@@ -13,7 +13,7 @@ func TestPageFully(t *testing.T) {
 
 	var assignments []*wanikaniapi.Assignment
 	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
-		page, err := client.ListAssignments(&wanikaniapi.AssignmentListParams{
+		page, err := client.AssignmentList(&wanikaniapi.AssignmentListParams{
 			ListParams: &wanikaniapi.ListParams{
 				PageAfterID: id,
 			},

@@ -13,7 +13,7 @@ func TestPageFullyReviews(t *testing.T) {
 
 	var reviews []*wanikaniapi.Review
 	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
-		page, err := client.ListReviews(&wanikaniapi.ReviewListParams{
+		page, err := client.ReviewList(&wanikaniapi.ReviewListParams{
 			ListParams: &wanikaniapi.ListParams{
 				PageAfterID: id,
 			},

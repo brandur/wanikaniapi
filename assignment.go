@@ -118,13 +118,13 @@ type AssignmentPage struct {
 	Data []*Assignment `json:"data"`
 }
 
-func (c *Client) GetAssignment(params *AssignmentGetParams) (*Assignment, error) {
+func (c *Client) AssignmentGet(params *AssignmentGetParams) (*Assignment, error) {
 	obj := &Assignment{}
 	err := c.request("GET", "/v2/assignments/"+strconv.Itoa(int(*params.ID)), "", obj)
 	return obj, err
 }
 
-func (c *Client) ListAssignments(params *AssignmentListParams) (*AssignmentPage, error) {
+func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, error) {
 	obj := &AssignmentPage{}
 	err := c.request("GET", "/v2/assignments", params.EncodeToQuery(), obj)
 	return obj, err

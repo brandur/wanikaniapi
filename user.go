@@ -32,7 +32,7 @@ type UserData struct {
 type UserGetParams struct {
 }
 
-func (c *Client) GetUser(params *UserGetParams) (*User, error) {
+func (c *Client) UserGet(params *UserGetParams) (*User, error) {
 	obj := &User{}
 	err := c.request("GET", "/v2/user", "", obj)
 	return obj, err
