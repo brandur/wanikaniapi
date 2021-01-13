@@ -1,56 +1,24 @@
 package wanikaniapi
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"net/url"
 	"strconv"
 	"time"
 )
 
-type ID int64
-
-type ListParams struct {
-	PageAfterID  *ID
-	PageBeforeID *ID
-}
-
-func (p *ListParams) encodeToURLValues() url.Values {
-	values := url.Values{}
-
-	if p.PageAfterID != nil {
-		values.Add("page_after_id", strconv.Itoa(int(*p.PageAfterID)))
-	}
-	if p.PageBeforeID != nil {
-		values.Add("page_before_id", strconv.Itoa(int(*p.PageBeforeID)))
-	}
-
-	return values
-}
-
-type ListParamsInterface interface {
-	EncodeToQuery() string
-}
-
-type Object struct {
-	DataUpdatedAt time.Time  `json:"data_updated_at"`
-	ID            ID         `json:"id"`
-	ObjectType    ObjectType `json:"object"`
-	URL           string     `json:"url"`
-}
-
-type ObjectType string
-
-type PageObject struct {
-	Object
-
-	TotalCount ID `json:"total_count"`
-
-	Pages struct {
-		NextURL     string `json:"next_url"`
-		PerPage     int    `json:"per_page"`
-		PreviousURL string `json:"previous_url"`
-	} `json:"pages"`
-}
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported functions
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
 
 func Bool(b bool) *bool {
 	return &b
@@ -112,6 +80,143 @@ func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
 
 	return nil
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported constants/types
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
+const WaniKaniAPIURL = "https://api.wanikani.com"
+const WaniKaniRevision = "20170710"
+
+type Client struct {
+	APIToken string
+	Logger   LeveledLoggerInterface
+
+	baseURL    string
+	httpClient *http.Client
+}
+
+func NewClient(config *ClientConfig) *Client {
+	var logger LeveledLoggerInterface
+
+	if config.Logger == nil {
+		logger = &LeveledLogger{Level: LevelError}
+	} else {
+		logger = config.Logger
+	}
+
+	return &Client{
+		APIToken: config.APIToken,
+		Logger:   logger,
+
+		baseURL:    WaniKaniAPIURL,
+		httpClient: &http.Client{},
+	}
+}
+
+func (c *Client) request(method, path, query string, data interface{}) error {
+	url := c.baseURL + path
+	if query != "" {
+		url += "?" + query
+	}
+
+	c.Logger.Debugf("Requesting URL: %v (revision: %v)", url, WaniKaniRevision)
+
+	req, err := http.NewRequest(method, url, nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.APIToken)
+	req.Header.Set("Wanikani-Revision", WaniKaniRevision)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("Unexpected status from API: %v", resp.Status)
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil
+	}
+
+	err = json.Unmarshal(bytes, data)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+type ClientConfig struct {
+	APIToken string
+	Logger   LeveledLoggerInterface
+}
+type ID int64
+
+type ListParams struct {
+	PageAfterID  *ID
+	PageBeforeID *ID
+}
+
+func (p *ListParams) encodeToURLValues() url.Values {
+	values := url.Values{}
+
+	if p.PageAfterID != nil {
+		values.Add("page_after_id", strconv.Itoa(int(*p.PageAfterID)))
+	}
+	if p.PageBeforeID != nil {
+		values.Add("page_before_id", strconv.Itoa(int(*p.PageBeforeID)))
+	}
+
+	return values
+}
+
+type ListParamsInterface interface {
+	EncodeToQuery() string
+}
+
+type Object struct {
+	DataUpdatedAt time.Time  `json:"data_updated_at"`
+	ID            ID         `json:"id"`
+	ObjectType    ObjectType `json:"object"`
+	URL           string     `json:"url"`
+}
+
+type ObjectType string
+
+type PageObject struct {
+	Object
+
+	TotalCount ID `json:"total_count"`
+
+	Pages struct {
+		NextURL     string `json:"next_url"`
+		PerPage     int    `json:"per_page"`
+		PreviousURL string `json:"previous_url"`
+	} `json:"pages"`
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Internal functions
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
 
 func joinIDs(ids []ID, separator string) string {
 	var s string

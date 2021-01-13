@@ -5,6 +5,42 @@ import (
 	"time"
 )
 
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported functions
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
+func (c *Client) ReviewGet(params *ReviewGetParams) (*Review, error) {
+	obj := &Review{}
+	err := c.request("GET", "/v2/reviews/"+strconv.FormatInt(int64(*params.ID), 10), "", obj)
+	return obj, err
+}
+
+func (c *Client) ReviewList(params *ReviewListParams) (*ReviewPage, error) {
+	obj := &ReviewPage{}
+	err := c.request("GET", "/v2/reviews", params.EncodeToQuery(), obj)
+	return obj, err
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported constants/types
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
+const (
+	ObjectTypeReview = ObjectType("review")
+)
+
 type Review struct {
 	Object
 	Data *ReviewData `json:"data"`
@@ -58,16 +94,4 @@ func (p *ReviewListParams) EncodeToQuery() string {
 type ReviewPage struct {
 	*PageObject
 	Data []*Review `json:"data"`
-}
-
-func (c *Client) ReviewGet(params *ReviewGetParams) (*Review, error) {
-	obj := &Review{}
-	err := c.request("GET", "/v2/reviews/"+strconv.FormatInt(int64(*params.ID), 10), "", obj)
-	return obj, err
-}
-
-func (c *Client) ReviewList(params *ReviewListParams) (*ReviewPage, error) {
-	obj := &ReviewPage{}
-	err := c.request("GET", "/v2/reviews", params.EncodeToQuery(), obj)
-	return obj, err
 }

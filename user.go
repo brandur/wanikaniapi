@@ -4,8 +4,34 @@ import (
 	"time"
 )
 
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported functions
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
+func (c *Client) UserGet(params *UserGetParams) (*User, error) {
+	obj := &User{}
+	err := c.request("GET", "/v2/user", "", obj)
+	return obj, err
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported constants/types
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
 const (
-	ObjectTypeUSer = ObjectType("user")
+	ObjectTypeUser = ObjectType("user")
 )
 
 type User struct {
@@ -30,10 +56,4 @@ type UserData struct {
 }
 
 type UserGetParams struct {
-}
-
-func (c *Client) UserGet(params *UserGetParams) (*User, error) {
-	obj := &User{}
-	err := c.request("GET", "/v2/user", "", obj)
-	return obj, err
 }
