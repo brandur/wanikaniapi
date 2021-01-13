@@ -5,6 +5,38 @@ import (
 	"time"
 )
 
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported functions
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
+func (c *Client) AssignmentGet(params *AssignmentGetParams) (*Assignment, error) {
+	obj := &Assignment{}
+	err := c.request("GET", "/v2/assignments/"+strconv.Itoa(int(*params.ID)), "", obj)
+	return obj, err
+}
+
+func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, error) {
+	obj := &AssignmentPage{}
+	err := c.request("GET", "/v2/assignments", params.EncodeToQuery(), obj)
+	return obj, err
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+// Exported constants/types
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
 const (
 	ObjectTypeAssignment = ObjectType("assigment")
 )
@@ -116,16 +148,4 @@ func (p *AssignmentListParams) EncodeToQuery() string {
 type AssignmentPage struct {
 	*PageObject
 	Data []*Assignment `json:"data"`
-}
-
-func (c *Client) AssignmentGet(params *AssignmentGetParams) (*Assignment, error) {
-	obj := &Assignment{}
-	err := c.request("GET", "/v2/assignments/"+strconv.Itoa(int(*params.ID)), "", obj)
-	return obj, err
-}
-
-func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, error) {
-	obj := &AssignmentPage{}
-	err := c.request("GET", "/v2/assignments", params.EncodeToQuery(), obj)
-	return obj, err
 }

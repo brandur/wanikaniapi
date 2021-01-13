@@ -8,24 +8,21 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-func TestPageFullyReviews(t *testing.T) {
+func TestReviewListAndGet(t *testing.T) {
 	client := wktesting.TestClient()
+	var sampleID wanikaniapi.ID
 
-	var reviews []*wanikaniapi.Review
-	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
-		page, err := client.ReviewList(&wanikaniapi.ReviewListParams{
-			ListParams: &wanikaniapi.ListParams{
-				PageAfterID: id,
-			},
-		})
-		if err != nil {
-			return nil, err
-		}
+	{
+		reviews, err := client.ReviewList(&wanikaniapi.ReviewListParams{})
+		assert.NoError(t, err)
+		assert.Greater(t, len(reviews.Data), 0)
 
-		reviews = append(reviews, page.Data...)
-		return page.PageObject, nil
-	})
-	assert.NoError(t, err)
+		sampleID = reviews.Data[0].ID
+	}
 
-	t.Logf("num reviews = %v", len(reviews))
+	{
+		review, err := client.ReviewGet(&wanikaniapi.ReviewGetParams{ID: &sampleID})
+		assert.NoError(t, err)
+		assert.NotNil(t, review)
+	}
 }

@@ -24,6 +24,10 @@ func Bool(b bool) *bool {
 	return &b
 }
 
+func IDPtr(id ID) *ID {
+	return &id
+}
+
 func Int(i int) *int {
 	return &i
 }
@@ -39,6 +43,10 @@ func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
 		page, err := onPage(nextPageAfterID)
 		if err != nil {
 			return fmt.Errorf("error paginating fully: %w", err)
+		}
+		if page == nil {
+			c.Logger.Debugf("Page function returned nil; breaking pagination")
+			return err
 		}
 
 		{
@@ -173,11 +181,13 @@ type ListParams struct {
 func (p *ListParams) encodeToURLValues() url.Values {
 	values := url.Values{}
 
-	if p.PageAfterID != nil {
-		values.Add("page_after_id", strconv.Itoa(int(*p.PageAfterID)))
-	}
-	if p.PageBeforeID != nil {
-		values.Add("page_before_id", strconv.Itoa(int(*p.PageBeforeID)))
+	if p != nil {
+		if p.PageAfterID != nil {
+			values.Add("page_after_id", strconv.FormatInt(int64(*p.PageAfterID), 10))
+		}
+		if p.PageBeforeID != nil {
+			values.Add("page_before_id", strconv.FormatInt(int64(*p.PageBeforeID), 10))
+		}
 	}
 
 	return values

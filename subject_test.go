@@ -8,14 +8,21 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-func TestListSubjects(t *testing.T) {
+func TestSubjectListAndGet(t *testing.T) {
 	client := wktesting.TestClient()
-	subjects, err := client.SubjectList(&wanikaniapi.SubjectListParams{
-		ListParams: &wanikaniapi.ListParams{},
-	})
-	assert.NoError(t, err)
+	var sampleID wanikaniapi.ID
 
-	t.Logf("result = %+v", subjects.Data[0])
-	t.Logf("result = %+v", subjects.Data[0].KanjiData)
-	t.Logf("result = %+v", subjects.Data[0].RadicalData)
+	{
+		subjects, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+		assert.NoError(t, err)
+		assert.Greater(t, len(subjects.Data), 0)
+
+		sampleID = subjects.Data[0].ID
+	}
+
+	{
+		subject, err := client.SubjectGet(&wanikaniapi.SubjectGetParams{ID: &sampleID})
+		assert.NoError(t, err)
+		assert.NotNil(t, subject)
+	}
 }

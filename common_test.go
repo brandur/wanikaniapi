@@ -11,9 +11,17 @@ import (
 func TestPageFully(t *testing.T) {
 	client := wktesting.TestClient()
 
-	var assignments []*wanikaniapi.Assignment
+	var i int
+	var subjects []*wanikaniapi.Subject
 	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
-		page, err := client.AssignmentList(&wanikaniapi.AssignmentListParams{
+		// Quit after convincing ourselves that we can page by going through a
+		// few pages. This saves time and API calls.
+		i++
+		if i > 2 {
+			return nil, nil
+		}
+
+		page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 			ListParams: &wanikaniapi.ListParams{
 				PageAfterID: id,
 			},
@@ -22,10 +30,10 @@ func TestPageFully(t *testing.T) {
 			return nil, err
 		}
 
-		assignments = append(assignments, page.Data...)
+		subjects = append(subjects, page.Data...)
 		return page.PageObject, nil
 	})
 	assert.NoError(t, err)
 
-	t.Logf("num assignments = %v", len(assignments))
+	t.Logf("num subjects paged before quitting: %v", len(subjects))
 }
