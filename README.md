@@ -1,4 +1,4 @@
-# wanikaniapi
+# wanikaniapi [![Build Status](https://github.com/brandur/wanikaniapi/workflows/wanikaniapi%20CI/badge.svg)](https://github.com/brandur/wanikaniapi/actions)
 
 A Go client for [WaniKani's API](https://docs.api.wanikani.com/).
 
