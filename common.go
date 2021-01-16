@@ -22,18 +22,26 @@ import (
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// Bool is a helper function that returns a pointer to the given value. This is
+// useful for setting values in parameter structs.
 func Bool(b bool) *bool {
 	return &b
 }
 
+// IDPtr is a helper function that returns a pointer to the given value. This is
+// useful for setting values in parameter structs.
 func IDPtr(id ID) *ID {
 	return &id
 }
 
+// Int is a helper function that returns a pointer to the given value. This is
+// useful for setting values in parameter structs.
 func Int(i int) *int {
 	return &i
 }
 
+// Time is a helper function that returns a pointer to the given value. This is
+// useful for setting values in parameter structs.
 func Time(t time.Time) *time.Time {
 	return &t
 }
