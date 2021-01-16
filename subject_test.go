@@ -23,7 +23,7 @@ func TestSubjectList(t *testing.T) {
 	assert.Equal(t, []byte(nil), req.Body)
 	assert.Equal(t, http.MethodGet, req.Method)
 	assert.Equal(t, "/v2/subjects", req.Path)
-	assert.Equal(t, "hidden=true&levels=1,2,3", wktesting.QueryUnescape(req.Query))
+	assert.Equal(t, "hidden=true&levels=1,2,3", wktesting.MustQueryUnescape(req.Query))
 }
 
 func TestSubjectGet(t *testing.T) {

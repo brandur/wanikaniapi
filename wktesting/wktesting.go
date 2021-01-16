@@ -18,7 +18,7 @@ func init() {
 	}
 }
 
-// MustMarshalJSON is the same as json.MarshalJSON except it panics on error.
+// MustMarshalJSON is the same as url.QueryUnescape except it panics on error.
 func MustMarshalJSON(v interface{}) []byte {
 	marshaled, err := json.Marshal(v)
 	if err != nil {
@@ -27,8 +27,9 @@ func MustMarshalJSON(v interface{}) []byte {
 	return marshaled
 }
 
-// QueryUnescape is the same as url.QueryUnescape except it panics on error.
-func QueryUnescape(s string) string {
+// MustQueryUnescape is the same as url.QueryUnescape except it panics on
+// error.
+func MustQueryUnescape(s string) string {
 	unescaped, err := url.QueryUnescape(s)
 	if err != nil {
 		panic(err)
