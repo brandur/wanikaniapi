@@ -1,6 +1,7 @@
 package wanikaniapi_test
 
 import (
+	"net/http"
 	"testing"
 
 	"github.com/brandur/wanikaniapi"
@@ -10,8 +11,14 @@ import (
 
 func TestUserGet(t *testing.T) {
 	client := wktesting.TestClient()
+	client.RecordMode = true
 
-	user, err := client.UserGet(&wanikaniapi.UserGetParams{})
+	_, err := client.UserGet(&wanikaniapi.UserGetParams{})
 	assert.NoError(t, err)
-	t.Logf("user: %+v", user)
+
+	req := client.RecordedRequests[0]
+	assert.Equal(t, []byte(nil), req.Body)
+	assert.Equal(t, http.MethodGet, req.Method)
+	assert.Equal(t, "/v2/user", req.Path)
+	assert.Equal(t, "", req.Query)
 }
