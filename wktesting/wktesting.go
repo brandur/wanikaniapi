@@ -1,6 +1,7 @@
 package wktesting
 
 import (
+	"net/url"
 	"os"
 
 	"github.com/brandur/wanikaniapi"
@@ -14,6 +15,15 @@ func init() {
 	if WaniKaniAPIToken == "" {
 		panic("tests need WANI_KANI_API_TOKEN in env")
 	}
+}
+
+// QueryUnescape is the same as url.QueryUnescape except it panics on error.
+func QueryUnescape(s string) string {
+	unescaped, err := url.QueryUnescape(s)
+	if err != nil {
+		panic(err)
+	}
+	return unescaped
 }
 
 // TestClient returns a WaniKani API client suitable for use in tests.

@@ -108,6 +108,12 @@ type Client struct {
 	APIToken string
 	Logger   LeveledLoggerInterface
 
+	// RecordMode stubs out any actual HTTP calls, and instead starts storing
+	// request data to RecordedRequests.
+	RecordMode bool
+
+	RecordedRequests []*RecordedRequest
+
 	baseURL    string
 	httpClient *http.Client
 }
@@ -137,10 +143,12 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 	}
 
 	c.Logger.Debugf("Requesting URL: %v (revision: %v)", url, WaniKaniRevision)
-
+	
+	var reqBytes []byte
 	var reqReader io.Reader
 	if reqData != nil {
-		reqBytes, err := json.Marshal(reqData)
+		var err error
+		reqBytes, err = json.Marshal(reqData)
 		if err != nil {
 			return err
 		}
@@ -158,19 +166,31 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 		req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	}
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
+	var respBytes []byte
+	if c.RecordMode {
+		c.RecordedRequests = append(c.RecordedRequests, &RecordedRequest{
+			Body: reqBytes,
+			Header: req.Header,
+			Method: method,
+			Path: path,
+			Query: query,
+		})
+		respBytes = []byte("{}")
+	} else {
+		resp, err := c.httpClient.Do(req)
+		if err != nil {
+			return err
+		}
+		defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Unexpected status from API: %v", resp.Status)
-	}
+		if resp.StatusCode != http.StatusOK {
+			return fmt.Errorf("Unexpected status from API: %v", resp.Status)
+		}
 
-	respBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil
+		respBytes, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil
+		}
 	}
 
 	err = json.Unmarshal(respBytes, respData)
@@ -230,6 +250,14 @@ type PageObject struct {
 		PerPage     int    `json:"per_page"`
 		PreviousURL string `json:"previous_url"`
 	} `json:"pages"`
+}
+
+type RecordedRequest struct {
+	Body []byte
+	Header http.Header
+	Method string
+	Path string
+	Query string
 }
 
 //////////////////////////////////////////////////////////////////////////////
