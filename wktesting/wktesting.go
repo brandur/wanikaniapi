@@ -37,10 +37,15 @@ func MustQueryUnescape(s string) string {
 	return unescaped
 }
 
-// TestClient returns a WaniKani API client suitable for use in tests.
-func TestClient() *wanikaniapi.Client {
-	return wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+// LocalClient returns a WaniKani API client with RecordMode on. This means
+// that instead of making live API calls, it saves them to RecoredRequests.
+// This is suitable for most tests and allows us to avoid mutating our
+// associated WaniKani account or exhausting its rate limit.
+func LocalClient() *wanikaniapi.Client {
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
 		APIToken: WaniKaniAPIToken,
 		Logger:   &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
 	})
+	client.RecordMode = true
+	return client
 }

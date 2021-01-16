@@ -10,8 +10,7 @@ import (
 )
 
 func TestSubjectList(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 		Hidden: wanikaniapi.Bool(true),
@@ -27,8 +26,7 @@ func TestSubjectList(t *testing.T) {
 }
 
 func TestSubjectGet(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	_, err := client.SubjectGet(&wanikaniapi.SubjectGetParams{ID: wanikaniapi.IDPtr(123)})
 	assert.NoError(t, err)

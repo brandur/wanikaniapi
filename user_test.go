@@ -10,8 +10,7 @@ import (
 )
 
 func TestUserGet(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	_, err := client.UserGet(&wanikaniapi.UserGetParams{})
 	assert.NoError(t, err)

@@ -9,8 +9,7 @@ import (
 )
 
 func TestPageFullyLocal(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	client.RecordedResponses = [][]byte{
 		[]byte(`{

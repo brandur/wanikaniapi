@@ -10,8 +10,7 @@ import (
 )
 
 func TestReviewList(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	_, err := client.ReviewList(&wanikaniapi.ReviewListParams{
 		AssignmentIDs: []wanikaniapi.ID{1, 2, 3},
@@ -27,8 +26,7 @@ func TestReviewList(t *testing.T) {
 }
 
 func TestReviewGet(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	_, err := client.ReviewGet(&wanikaniapi.ReviewGetParams{ID: wanikaniapi.IDPtr(123)})
 	assert.NoError(t, err)

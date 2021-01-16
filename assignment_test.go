@@ -10,8 +10,7 @@ import (
 )
 
 func TestAssignmentList(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	_, err := client.AssignmentList(&wanikaniapi.AssignmentListParams{
 		Levels:  []int{1, 2, 3},
@@ -27,8 +26,7 @@ func TestAssignmentList(t *testing.T) {
 }
 
 func TestAssignmentGet(t *testing.T) {
-	client := wktesting.TestClient()
-	client.RecordMode = true
+	client := wktesting.LocalClient()
 
 	_, err := client.AssignmentGet(&wanikaniapi.AssignmentGetParams{ID: wanikaniapi.IDPtr(123)})
 	assert.NoError(t, err)
