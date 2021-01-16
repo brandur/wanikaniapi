@@ -147,6 +147,10 @@ func NewClient(config *ClientConfig) *Client {
 }
 
 func (c *Client) request(method, path, query string, reqData interface{}, respData interface{}) error {
+	if c.APIToken != "" && !c.RecordMode {
+		return fmt.Errorf("wanikaniapi.Client.APIToken must be set to make a live API call")
+	}
+
 	url := c.baseURL + path
 	if query != "" {
 		url += "?" + query
