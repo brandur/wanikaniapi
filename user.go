@@ -30,10 +30,6 @@ func (c *Client) UserGet(params *UserGetParams) (*User, error) {
 //
 //////////////////////////////////////////////////////////////////////////////
 
-const (
-	ObjectTypeUser = ObjectType("user")
-)
-
 type User struct {
 	Object
 	Data *UserData `json:"data"`

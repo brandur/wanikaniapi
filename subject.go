@@ -39,12 +39,6 @@ func (c *Client) SubjectList(params *SubjectListParams) (*SubjectPage, error) {
 //
 //////////////////////////////////////////////////////////////////////////////
 
-const (
-	ObjectTypeKanji      = ObjectType("kanji")
-	ObjectTypeRadical    = ObjectType("radical")
-	ObjectTypeVocabulary = ObjectType("vocabulary")
-)
-
 type Subject struct {
 	Object
 
@@ -69,21 +63,27 @@ func (s *Subject) UnmarshalJSON(data []byte) error {
 
 	switch s.Object.ObjectType {
 	case ObjectTypeKanji:
-		s.KanjiData = &SubjectKanjiData{}
-		if err := json.Unmarshal(objMap["data"], s.KanjiData); err != nil {
-			return fmt.Errorf("decoding kanji from subject: %w", err)
+		if _, ok := objMap["data"]; ok {
+			s.KanjiData = &SubjectKanjiData{}
+			if err := json.Unmarshal(objMap["data"], s.KanjiData); err != nil {
+				return fmt.Errorf("decoding kanji from subject: %w", err)
+			}
 		}
 
 	case ObjectTypeRadical:
-		s.RadicalData = &SubjectRadicalData{}
-		if err := json.Unmarshal(objMap["data"], s.RadicalData); err != nil {
-			return fmt.Errorf("decoding radical from subject: %w", err)
+		if _, ok := objMap["data"]; ok {
+			s.RadicalData = &SubjectRadicalData{}
+			if err := json.Unmarshal(objMap["data"], s.RadicalData); err != nil {
+				return fmt.Errorf("decoding radical from subject: %w", err)
+			}
 		}
 
 	case ObjectTypeVocabulary:
-		s.VocabularyData = &SubjectVocabularyData{}
-		if err := json.Unmarshal(objMap["data"], s.VocabularyData); err != nil {
-			return fmt.Errorf("decoding vocabulary from subject: %w", err)
+		if _, ok := objMap["data"]; ok {
+			s.VocabularyData = &SubjectVocabularyData{}
+			if err := json.Unmarshal(objMap["data"], s.VocabularyData); err != nil {
+				return fmt.Errorf("decoding vocabulary from subject: %w", err)
+			}
 		}
 	}
 

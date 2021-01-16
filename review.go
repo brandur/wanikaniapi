@@ -37,10 +37,6 @@ func (c *Client) ReviewList(params *ReviewListParams) (*ReviewPage, error) {
 //
 //////////////////////////////////////////////////////////////////////////////
 
-const (
-	ObjectTypeReview = ObjectType("review")
-)
-
 type Review struct {
 	Object
 	Data *ReviewData `json:"data"`

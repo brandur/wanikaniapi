@@ -15,7 +15,7 @@ func TestReviewList(t *testing.T) {
 
 	_, err := client.ReviewList(&wanikaniapi.ReviewListParams{
 		AssignmentIDs: []wanikaniapi.ID{1, 2, 3},
-		SubjectIDs: []wanikaniapi.ID{4, 5, 6},
+		SubjectIDs:    []wanikaniapi.ID{4, 5, 6},
 	})
 	assert.NoError(t, err)
 

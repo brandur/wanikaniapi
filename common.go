@@ -101,6 +101,15 @@ func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
 //
 //////////////////////////////////////////////////////////////////////////////
 
+const (
+	ObjectTypeAssignment = ObjectType("assignment")
+	ObjectTypeKanji      = ObjectType("kanji")
+	ObjectTypeRadical    = ObjectType("radical")
+	ObjectTypeReview     = ObjectType("review")
+	ObjectTypeUser       = ObjectType("user")
+	ObjectTypeVocabulary = ObjectType("vocabulary")
+)
+
 const WaniKaniAPIURL = "https://api.wanikani.com"
 const WaniKaniRevision = "20170710"
 
@@ -112,7 +121,8 @@ type Client struct {
 	// request data to RecordedRequests.
 	RecordMode bool
 
-	RecordedRequests []*RecordedRequest
+	RecordedRequests  []*RecordedRequest
+	RecordedResponses [][]byte
 
 	baseURL    string
 	httpClient *http.Client
@@ -143,7 +153,7 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 	}
 
 	c.Logger.Debugf("Requesting URL: %v (revision: %v)", url, WaniKaniRevision)
-	
+
 	var reqBytes []byte
 	var reqReader io.Reader
 	if reqData != nil {
@@ -169,13 +179,19 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 	var respBytes []byte
 	if c.RecordMode {
 		c.RecordedRequests = append(c.RecordedRequests, &RecordedRequest{
-			Body: reqBytes,
+			Body:   reqBytes,
 			Header: req.Header,
 			Method: method,
-			Path: path,
-			Query: query,
+			Path:   path,
+			Query:  query,
 		})
-		respBytes = []byte("{}")
+
+		if len(c.RecordedResponses) > 0 {
+			respBytes, c.RecordedResponses = c.RecordedResponses[0], c.RecordedResponses[1:]
+		}
+		if respBytes == nil {
+			respBytes = []byte("{}")
+		}
 	} else {
 		resp, err := c.httpClient.Do(req)
 		if err != nil {
@@ -195,7 +211,7 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 
 	err = json.Unmarshal(respBytes, respData)
 	if err != nil {
-		return err
+		return fmt.Errorf("error unmarshaling response: %v", err)
 	}
 
 	return nil
@@ -253,11 +269,11 @@ type PageObject struct {
 }
 
 type RecordedRequest struct {
-	Body []byte
+	Body   []byte
 	Header http.Header
 	Method string
-	Path string
-	Query string
+	Path   string
+	Query  string
 }
 
 //////////////////////////////////////////////////////////////////////////////

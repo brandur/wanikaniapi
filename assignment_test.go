@@ -14,7 +14,7 @@ func TestAssignmentList(t *testing.T) {
 	client.RecordMode = true
 
 	_, err := client.AssignmentList(&wanikaniapi.AssignmentListParams{
-		Levels: []int{1, 2, 3},
+		Levels:  []int{1, 2, 3},
 		Started: wanikaniapi.Bool(true),
 	})
 	assert.NoError(t, err)

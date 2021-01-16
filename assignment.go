@@ -37,10 +37,6 @@ func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, 
 //
 //////////////////////////////////////////////////////////////////////////////
 
-const (
-	ObjectTypeAssignment = ObjectType("assignment")
-)
-
 type Assignment struct {
 	Object
 	Data *AssignmentData `json:"data"`
