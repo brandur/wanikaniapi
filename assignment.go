@@ -38,7 +38,7 @@ func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, 
 //////////////////////////////////////////////////////////////////////////////
 
 const (
-	ObjectTypeAssignment = ObjectType("assigment")
+	ObjectTypeAssignment = ObjectType("assignment")
 )
 
 type Assignment struct {
