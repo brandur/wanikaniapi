@@ -45,7 +45,7 @@ type Assignment struct {
 type AssignmentData struct {
 	AvailableAt   *time.Time `json:"available_at"`
 	BurnedAt      *time.Time `json:"burned_at"`
-	CreatedAt     time.Time  `json:"created_at"`
+	CreatedAt     *time.Time `json:"created_at"`
 	PassedAt      *time.Time `json:"passed_at"`
 	ResurrectedAt *time.Time `json:"resurrected_at"`
 	SRSStage      int        `json:"srs_stage"`

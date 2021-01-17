@@ -61,6 +61,7 @@ const (
 	ObjectTypeKanji            = ObjectType("kanji")
 	ObjectTypeLevelProgression = ObjectType("level_progression")
 	ObjectTypeRadical          = ObjectType("radical")
+	ObjectTypeReset            = ObjectType("reset")
 	ObjectTypeReview           = ObjectType("review")
 	ObjectTypeUser             = ObjectType("user")
 	ObjectTypeVocabulary       = ObjectType("vocabulary")
