@@ -14,7 +14,7 @@ func TestStudyMaterialList(t *testing.T) {
 
 	_, err := client.StudyMaterialList(&wanikaniapi.StudyMaterialListParams{
 		Hidden: wanikaniapi.Bool(true),
-		IDs:  []wanikaniapi.ID{1, 2, 3},
+		IDs:    []wanikaniapi.ID{1, 2, 3},
 	})
 	assert.NoError(t, err)
 

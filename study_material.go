@@ -43,13 +43,13 @@ type StudyMaterial struct {
 }
 
 type StudyMaterialData struct {
-	CreatedAt     time.Time  `json:"created_at"`
-	Hidden bool `json:"hidden"`
-	MeaningNote *string `json:"meaning_note"`
-	MeaningSynonyms []string `json:"meaning_synonyms"`
-	ReadingNote *string `json:"reading_note"`
-	SubjectID     ID         `json:"subject_id"`
-	SubjectType   ObjectType `json:"subject_type"`
+	CreatedAt       time.Time  `json:"created_at"`
+	Hidden          bool       `json:"hidden"`
+	MeaningNote     *string    `json:"meaning_note"`
+	MeaningSynonyms []string   `json:"meaning_synonyms"`
+	ReadingNote     *string    `json:"reading_note"`
+	SubjectID       ID         `json:"subject_id"`
+	SubjectType     ObjectType `json:"subject_type"`
 }
 
 type StudyMaterialGetParams struct {
@@ -58,11 +58,11 @@ type StudyMaterialGetParams struct {
 
 type StudyMaterialListParams struct {
 	*ListParams
-	Hidden                         *bool
-	IDs                            []ID
-	SubjectIDs                     []ID
-	SubjectTypes                     []ObjectType
-	UpdatedAfter                   *time.Time
+	Hidden       *bool
+	IDs          []ID
+	SubjectIDs   []ID
+	SubjectTypes []ObjectType
+	UpdatedAfter *time.Time
 }
 
 func (p *StudyMaterialListParams) EncodeToQuery() string {
