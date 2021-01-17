@@ -21,7 +21,7 @@ func TestAssignmentList(t *testing.T) {
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
-	assert.Equal(t, []byte(nil), req.Body)
+	assert.Equal(t, "", string(req.Body))
 	assert.Equal(t, http.MethodGet, req.Method)
 	assert.Equal(t, "/v2/assignments", req.Path)
 	assert.Equal(t, "levels=1,2,3&started=true", wktesting.MustQueryUnescape(req.Query))
@@ -34,7 +34,7 @@ func TestAssignmentGet(t *testing.T) {
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
-	assert.Equal(t, []byte(nil), req.Body)
+	assert.Equal(t, "", string(req.Body))
 	assert.Equal(t, http.MethodGet, req.Method)
 	assert.Equal(t, "/v2/assignments/123", req.Path)
 	assert.Equal(t, "", req.Query)

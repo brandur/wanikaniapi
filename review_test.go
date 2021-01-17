@@ -35,7 +35,7 @@ func TestReviewList(t *testing.T) {
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
-	assert.Equal(t, []byte(nil), req.Body)
+	assert.Equal(t, "", string(req.Body))
 	assert.Equal(t, http.MethodGet, req.Method)
 	assert.Equal(t, "/v2/reviews", req.Path)
 	assert.Equal(t, "assignment_ids=1,2,3&subject_ids=4,5,6", wktesting.MustQueryUnescape(req.Query))
@@ -48,7 +48,7 @@ func TestReviewGet(t *testing.T) {
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
-	assert.Equal(t, []byte(nil), req.Body)
+	assert.Equal(t, "", string(req.Body))
 	assert.Equal(t, http.MethodGet, req.Method)
 	assert.Equal(t, "/v2/reviews/123", req.Path)
 	assert.Equal(t, "", req.Query)
