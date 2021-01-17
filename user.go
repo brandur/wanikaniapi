@@ -20,6 +20,13 @@ func (c *Client) UserGet(params *UserGetParams) (*User, error) {
 	return obj, err
 }
 
+func (c *Client) UserUpdate(params *UserUpdateParams) (*User, error) {
+	wrapper := &userUpdateParamsWrapper{Params: params}
+	obj := &User{}
+	err := c.request("PUT", "/v2/user", "", wrapper, obj)
+	return obj, err
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -52,4 +59,21 @@ type UserData struct {
 }
 
 type UserGetParams struct {
+}
+
+type UserUpdateParams struct {
+	Preferences *UserUpdatePreferencesParams `json:"preferences,omitempty"`
+}
+
+type UserUpdatePreferencesParams struct {
+	DefaultVoiceActorID        *ID     `json:"default_voice_actor_id,omitempty"`
+	LessonsAutoplayAudio       *bool   `json:"lessons_autoplay_audio,omitempty"`
+	LessonsBatchSize           *int    `json:"lessons_batch_size,omitempty"`
+	LessonsPresentationOrder   *string `json:"lessons_presentation_order,omitempty"`
+	ReviewsAutoplayAudio       *bool   `json:"reviews_autoplay_audio,omitempty"`
+	ReviewsDisplaySRSIndicator *bool   `json:"reviews_display_srs_indicator,omitempty"`
+}
+
+type userUpdateParamsWrapper struct {
+	Params *UserUpdateParams `json:"study_material"`
 }
