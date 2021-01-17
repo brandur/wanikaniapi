@@ -40,6 +40,12 @@ func Int(i int) *int {
 	return &i
 }
 
+// String is a helper function that returns a pointer to the given value. This is
+// useful for setting values in parameter structs.
+func String(s string) *string {
+	return &s
+}
+
 // Time is a helper function that returns a pointer to the given value. This is
 // useful for setting values in parameter structs.
 func Time(t time.Time) *time.Time {

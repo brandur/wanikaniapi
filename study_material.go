@@ -15,6 +15,13 @@ import (
 //
 //////////////////////////////////////////////////////////////////////////////
 
+func (c *Client) StudyMaterialCreate(params *StudyMaterialCreateParams) (*StudyMaterial, error) {
+	wrapper := &studyMaterialCreateParamsWrapper{Params: params}
+	obj := &StudyMaterial{}
+	err := c.request("POST", "/v2/study_materials", "", wrapper, obj)
+	return obj, err
+}
+
 func (c *Client) StudyMaterialGet(params *StudyMaterialGetParams) (*StudyMaterial, error) {
 	obj := &StudyMaterial{}
 	err := c.request("GET", "/v2/study_materials/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
@@ -50,6 +57,18 @@ type StudyMaterialData struct {
 	ReadingNote     *string    `json:"reading_note"`
 	SubjectID       ID         `json:"subject_id"`
 	SubjectType     ObjectType `json:"subject_type"`
+}
+
+type StudyMaterialCreateParams struct {
+	*ListParams
+	MeaningNote     *string  `json:"meaning_note,omitempty"`
+	MeaningSynonyms []string `json:"meaning_synonyms,omitempty"`
+	ReadingNote     *string  `json:"reading_note,omitempty"`
+	SubjectID       *ID      `json:"subject_id,omitempty"`
+}
+
+type studyMaterialCreateParamsWrapper struct {
+	Params *StudyMaterialCreateParams `json:"study_material"`
 }
 
 type StudyMaterialGetParams struct {

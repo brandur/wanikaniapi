@@ -9,6 +9,22 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
+func TestStudyMaterialCreate(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	_, err := client.StudyMaterialCreate(&wanikaniapi.StudyMaterialCreateParams{
+		MeaningNote: wanikaniapi.String("hard"),
+		SubjectID:   wanikaniapi.IDPtr(123),
+	})
+	assert.NoError(t, err)
+
+	req := client.RecordedRequests[0]
+	assert.Equal(t, `{"study_material":{"meaning_note":"hard","subject_id":123}}`, string(req.Body))
+	assert.Equal(t, http.MethodPost, req.Method)
+	assert.Equal(t, "/v2/study_materials", req.Path)
+	assert.Equal(t, "", req.Query)
+}
+
 func TestStudyMaterialList(t *testing.T) {
 	client := wktesting.LocalClient()
 
