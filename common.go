@@ -62,8 +62,11 @@ func Time(t time.Time) *time.Time {
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// Constants for the various object types that may be returned in the object
+// field of WaniKani's API resources.
 const (
 	ObjectTypeAssignment             = ObjectType("assignment")
+	ObjectTypeCollection             = ObjectType("collection")
 	ObjectTypeKanji                  = ObjectType("kanji")
 	ObjectTypeLevelProgression       = ObjectType("level_progression")
 	ObjectTypeRadical                = ObjectType("radical")
@@ -75,6 +78,7 @@ const (
 	ObjectTypeStudyMaterial          = ObjectType("study_material")
 	ObjectTypeUser                   = ObjectType("user")
 	ObjectTypeVocabulary             = ObjectType("vocabulary")
+	ObjectTypeVoiceActor             = ObjectType("voice_actor")
 )
 
 const WaniKaniAPIURL = "https://api.wanikani.com"
