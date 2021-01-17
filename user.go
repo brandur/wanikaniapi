@@ -43,22 +43,33 @@ type User struct {
 }
 
 type UserData struct {
-	CurrentVacationStartedAt *time.Time             `json:"current_vacation_started_at"`
-	ID                       string                 `json:"id"`
-	Level                    int                    `json:"level"`
-	Preferences              map[string]interface{} `json:"preferences"`
-	ProfileURL               string                 `json:"profile_url"`
-	StartedAt                time.Time              `json:"started_at"`
-	Subscription             struct {
-		Active          bool       `json:"active"`
-		MaxLevelGranted int        `json:"max_level_granted"`
-		PeriodEndsAt    *time.Time `json:"period_ends_at"`
-		Type            string     `json:"type"`
-	} `json:"subscription"`
-	Username string `json:"username"`
+	CurrentVacationStartedAt *time.Time        `json:"current_vacation_started_at"`
+	ID                       string            `json:"id"`
+	Level                    int               `json:"level"`
+	Preferences              *UserPreferences  `json:"preferences"`
+	ProfileURL               string            `json:"profile_url"`
+	StartedAt                time.Time         `json:"started_at"`
+	Subscription             *UserSubscription `json:"subscription"`
+	Username                 string            `json:"username"`
 }
 
 type UserGetParams struct {
+}
+
+type UserPreferences struct {
+	DefaultVoiceActorID        ID     `json:"default_voice_actor_id"`
+	LessonsAutoplayAudio       bool   `json:"lessons_autoplay_audio"`
+	LessonsBatchSize           int    `json:"lessons_batch_size"`
+	LessonsPresentationOrder   string `json:"lessons_presentation_order"`
+	ReviewsAutoplayAudio       bool   `json:"reviews_autoplay_audio"`
+	ReviewsDisplaySRSIndicator bool   `json:"reviews_display_srs_indicator"`
+}
+
+type UserSubscription struct {
+	Active          bool       `json:"active"`
+	MaxLevelGranted int        `json:"max_level_granted"`
+	PeriodEndsAt    *time.Time `json:"period_ends_at"`
+	Type            string     `json:"type"`
 }
 
 type UserUpdateParams struct {
