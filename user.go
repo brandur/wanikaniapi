@@ -86,5 +86,5 @@ type UserUpdatePreferencesParams struct {
 }
 
 type userUpdateParamsWrapper struct {
-	Params *UserUpdateParams `json:"study_material"`
+	Params *UserUpdateParams `json:"user"`
 }

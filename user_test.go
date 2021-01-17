@@ -34,7 +34,7 @@ func TestUserUpdate(t *testing.T) {
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
-	assert.Equal(t, `{"study_material":{"preferences":{"lessons_autoplay_audio":true,"reviews_display_srs_indicator":true}}}`, string(req.Body))
+	assert.Equal(t, `{"user":{"preferences":{"lessons_autoplay_audio":true,"reviews_display_srs_indicator":true}}}`, string(req.Body))
 	assert.Equal(t, http.MethodPut, req.Method)
 	assert.Equal(t, "/v2/user", req.Path)
 	assert.Equal(t, "", req.Query)
