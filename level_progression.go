@@ -43,13 +43,13 @@ type LevelProgression struct {
 }
 
 type LevelProgressionData struct {
-	CreatedAt   time.Time `json:"created_at"`
-	Level       int       `json:"level"`
-	UnlockedAt  time.Time `json:"unlocked_at"`
-	StartedAt   time.Time `json:"started_at"`
-	PassedAt    time.Time `json:"passed_at"`
-	CompletedAt time.Time `json:"completed_at"`
-	AbandonedAt time.Time `json:"abandoned_at"`
+	AbandonedAt *time.Time `json:"abandoned_at"`
+	CompletedAt *time.Time `json:"completed_at"`
+	CreatedAt   time.Time  `json:"created_at"`
+	Level       int        `json:"level"`
+	PassedAt    *time.Time `json:"passed_at"`
+	StartedAt   *time.Time `json:"started_at"`
+	UnlockedAt  *time.Time `json:"unlocked_at"`
 }
 
 type LevelProgressionGetParams struct {
