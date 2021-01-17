@@ -42,12 +42,11 @@ type Assignment struct {
 	Data *AssignmentData `json:"data"`
 }
 
-// TODO: check nulls
-// TODO: missing Hidden?
 type AssignmentData struct {
 	AvailableAt   *time.Time `json:"available_at"`
 	BurnedAt      *time.Time `json:"burned_at"`
 	CreatedAt     time.Time  `json:"created_at"`
+	Hidden        bool       `json:"hidden"`
 	PassedAt      *time.Time `json:"passed_at"`
 	ResurrectedAt *time.Time `json:"resurrected_at"`
 	SRSStage      int        `json:"srs_stage"`
