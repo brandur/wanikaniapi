@@ -53,3 +53,19 @@ func TestStudyMaterialGet(t *testing.T) {
 	assert.Equal(t, "/v2/study_materials/123", req.Path)
 	assert.Equal(t, "", req.Query)
 }
+
+func TestStudyMaterialUpdate(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	_, err := client.StudyMaterialUpdate(&wanikaniapi.StudyMaterialUpdateParams{
+		ID:          wanikaniapi.IDPtr(123),
+		MeaningNote: wanikaniapi.String("easy now"),
+	})
+	assert.NoError(t, err)
+
+	req := client.RecordedRequests[0]
+	assert.Equal(t, `{"study_material":{"meaning_note":"easy now"}}`, string(req.Body))
+	assert.Equal(t, http.MethodPut, req.Method)
+	assert.Equal(t, "/v2/study_materials/123", req.Path)
+	assert.Equal(t, "", req.Query)
+}

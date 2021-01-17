@@ -34,6 +34,13 @@ func (c *Client) StudyMaterialList(params *StudyMaterialListParams) (*StudyMater
 	return obj, err
 }
 
+func (c *Client) StudyMaterialUpdate(params *StudyMaterialUpdateParams) (*StudyMaterial, error) {
+	wrapper := &studyMaterialUpdateParamsWrapper{Params: params}
+	obj := &StudyMaterial{}
+	err := c.request("PUT", "/v2/study_materials/"+strconv.Itoa(int(*params.ID)), "", wrapper, obj)
+	return obj, err
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -60,7 +67,6 @@ type StudyMaterialData struct {
 }
 
 type StudyMaterialCreateParams struct {
-	*ListParams
 	MeaningNote     *string  `json:"meaning_note,omitempty"`
 	MeaningSynonyms []string `json:"meaning_synonyms,omitempty"`
 	ReadingNote     *string  `json:"reading_note,omitempty"`
@@ -113,4 +119,15 @@ func (p *StudyMaterialListParams) EncodeToQuery() string {
 type StudyMaterialPage struct {
 	*PageObject
 	Data []*StudyMaterial `json:"data"`
+}
+
+type StudyMaterialUpdateParams struct {
+	ID              *ID      `json:"-"`
+	MeaningNote     *string  `json:"meaning_note,omitempty"`
+	MeaningSynonyms []string `json:"meaning_synonyms,omitempty"`
+	ReadingNote     *string  `json:"reading_note,omitempty"`
+}
+
+type studyMaterialUpdateParamsWrapper struct {
+	Params *StudyMaterialUpdateParams `json:"study_material"`
 }
