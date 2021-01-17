@@ -42,6 +42,8 @@ type Assignment struct {
 	Data *AssignmentData `json:"data"`
 }
 
+// TODO: check nulls
+// TODO: missing Hidden?
 type AssignmentData struct {
 	AvailableAt   *time.Time `json:"available_at"`
 	BurnedAt      *time.Time `json:"burned_at"`
