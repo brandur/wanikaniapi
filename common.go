@@ -63,6 +63,7 @@ const (
 	ObjectTypeRadical          = ObjectType("radical")
 	ObjectTypeReset            = ObjectType("reset")
 	ObjectTypeReview           = ObjectType("review")
+	ObjectTypeReviewStatistic  = ObjectType("review_statistic")
 	ObjectTypeUser             = ObjectType("user")
 	ObjectTypeVocabulary       = ObjectType("vocabulary")
 )
@@ -323,6 +324,20 @@ func joinInts(ints []int, separator string) string {
 		}
 
 		s += strconv.Itoa(n)
+	}
+
+	return s
+}
+
+func joinObjectTypes(types []ObjectType, separator string) string {
+	var s string
+
+	for i, typ := range types {
+		if i != 0 {
+			typ += ","
+		}
+
+		s += string(typ)
 	}
 
 	return s
