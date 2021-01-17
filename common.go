@@ -65,6 +65,7 @@ const (
 	ObjectTypeReview                 = ObjectType("review")
 	ObjectTypeReviewStatistic        = ObjectType("review_statistic")
 	ObjectTypeSpacedRepetitionSystem = ObjectType("spaced_repetition_system")
+	ObjectTypeStudyMaterial          = ObjectType("study_material")
 	ObjectTypeUser                   = ObjectType("user")
 	ObjectTypeVocabulary             = ObjectType("vocabulary")
 )
