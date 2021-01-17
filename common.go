@@ -57,15 +57,16 @@ func Time(t time.Time) *time.Time {
 //////////////////////////////////////////////////////////////////////////////
 
 const (
-	ObjectTypeAssignment       = ObjectType("assignment")
-	ObjectTypeKanji            = ObjectType("kanji")
-	ObjectTypeLevelProgression = ObjectType("level_progression")
-	ObjectTypeRadical          = ObjectType("radical")
-	ObjectTypeReset            = ObjectType("reset")
-	ObjectTypeReview           = ObjectType("review")
-	ObjectTypeReviewStatistic  = ObjectType("review_statistic")
-	ObjectTypeUser             = ObjectType("user")
-	ObjectTypeVocabulary       = ObjectType("vocabulary")
+	ObjectTypeAssignment             = ObjectType("assignment")
+	ObjectTypeKanji                  = ObjectType("kanji")
+	ObjectTypeLevelProgression       = ObjectType("level_progression")
+	ObjectTypeRadical                = ObjectType("radical")
+	ObjectTypeReset                  = ObjectType("reset")
+	ObjectTypeReview                 = ObjectType("review")
+	ObjectTypeReviewStatistic        = ObjectType("review_statistic")
+	ObjectTypeSpacedRepetitionSystem = ObjectType("spaced_repetition_system")
+	ObjectTypeUser                   = ObjectType("user")
+	ObjectTypeVocabulary             = ObjectType("vocabulary")
 )
 
 const WaniKaniAPIURL = "https://api.wanikani.com"
