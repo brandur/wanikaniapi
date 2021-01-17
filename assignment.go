@@ -27,6 +27,12 @@ func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, 
 	return obj, err
 }
 
+func (c *Client) AssignmentStart(params *AssignmentStartParams) (*Assignment, error) {
+	obj := &Assignment{}
+	err := c.request("POST", "/v2/assignments/"+strconv.Itoa(int(*params.ID))+"/start", "", params, obj)
+	return obj, err
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -145,4 +151,9 @@ func (p *AssignmentListParams) EncodeToQuery() string {
 type AssignmentPage struct {
 	*PageObject
 	Data []*Assignment `json:"data"`
+}
+
+type AssignmentStartParams struct {
+	ID        *ID     `json:"-"`
+	StartedAt *WKTime `json:"started_at"`
 }

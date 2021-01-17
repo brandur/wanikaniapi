@@ -48,8 +48,9 @@ func String(s string) *string {
 
 // Time is a helper function that returns a pointer to the given value. This is
 // useful for setting values in parameter structs.
-func Time(t time.Time) *time.Time {
-	return &t
+func Time(t time.Time) *WKTime {
+	wkT := WKTime(t)
+	return &wkT
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -302,6 +303,16 @@ type RecordedRequest struct {
 	Method string
 	Path   string
 	Query  string
+}
+
+// WKTime is a type based on time.Time that lets us precisely control the JSON
+// marshaling for use in API parameters to endpoints.
+type WKTime time.Time
+
+// MarshalJSON overrides JSON marshaling for WKTime so that it can be put in
+// the RFC3339 format that WaniKani expects.
+func (t WKTime) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + time.Time(t).Format(time.RFC3339) + `"`), nil
 }
 
 //////////////////////////////////////////////////////////////////////////////

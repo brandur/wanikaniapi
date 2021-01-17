@@ -1,8 +1,10 @@
 package wanikaniapi_test
 
 import (
+	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/brandur/wanikaniapi"
 	"github.com/brandur/wanikaniapi/wktesting"
@@ -35,5 +37,25 @@ func TestAssignmentGet(t *testing.T) {
 	assert.Equal(t, []byte(nil), req.Body)
 	assert.Equal(t, http.MethodGet, req.Method)
 	assert.Equal(t, "/v2/assignments/123", req.Path)
+	assert.Equal(t, "", req.Query)
+}
+
+func TestAssignmentStart(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	startedAt := time.Now()
+	_, err := client.AssignmentStart(&wanikaniapi.AssignmentStartParams{
+		ID:        wanikaniapi.IDPtr(123),
+		StartedAt: wanikaniapi.Time(startedAt),
+	})
+	assert.NoError(t, err)
+
+	req := client.RecordedRequests[0]
+	assert.Equal(t,
+		fmt.Sprintf(`{"started_at":"%v"}`, startedAt.Format(time.RFC3339)),
+		string(req.Body),
+	)
+	assert.Equal(t, http.MethodPost, req.Method)
+	assert.Equal(t, "/v2/assignments/123/start", req.Path)
 	assert.Equal(t, "", req.Query)
 }

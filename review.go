@@ -50,11 +50,11 @@ type Review struct {
 }
 
 type ReviewCreateParams struct {
-	AssignmentID            *ID        `json:"assignment_id,omitempty"`
-	CreatedAt               *time.Time `json:"created_at,omitempty"`
-	IncorrectMeaningAnswers *int       `json:"incorrect_meaning_answers,omitempty"`
-	IncorrectReadingAnswers *int       `json:"incorrect_reading_answers,omitempty"`
-	SubjectID               *ID        `json:"subject_id,omitempty"`
+	AssignmentID            *ID     `json:"assignment_id,omitempty"`
+	CreatedAt               *WKTime `json:"created_at,omitempty"`
+	IncorrectMeaningAnswers *int    `json:"incorrect_meaning_answers,omitempty"`
+	IncorrectReadingAnswers *int    `json:"incorrect_reading_answers,omitempty"`
+	SubjectID               *ID     `json:"subject_id,omitempty"`
 }
 
 type reviewCreateParamsWrapper struct {

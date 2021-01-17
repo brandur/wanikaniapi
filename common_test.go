@@ -1,7 +1,9 @@
 package wanikaniapi_test
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/brandur/wanikaniapi"
 	"github.com/brandur/wanikaniapi/wktesting"
@@ -118,4 +120,12 @@ func TestPageFullyLive(t *testing.T) {
 	assert.NoError(t, err)
 
 	t.Logf("num subjects paged before quitting: %v", len(subjects))
+}
+
+func TestWKTimeMarshalJSON(t *testing.T) {
+	goT := time.Now()
+	wkT := wanikaniapi.WKTime(goT)
+	marshaled, err := wkT.MarshalJSON()
+	assert.NoError(t, err)
+	assert.Equal(t, fmt.Sprintf(`"%s"`, goT.Format(time.RFC3339)), string(marshaled))
 }
