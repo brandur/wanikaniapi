@@ -49,17 +49,17 @@ type Assignment struct {
 }
 
 type AssignmentData struct {
-	AvailableAt   *time.Time `json:"available_at"`
-	BurnedAt      *time.Time `json:"burned_at"`
-	CreatedAt     time.Time  `json:"created_at"`
-	Hidden        bool       `json:"hidden"`
-	PassedAt      *time.Time `json:"passed_at"`
-	ResurrectedAt *time.Time `json:"resurrected_at"`
-	SRSStage      int        `json:"srs_stage"`
-	StartedAt     *time.Time `json:"started_at"`
-	SubjectID     WKID       `json:"subject_id"`
-	SubjectType   ObjectType `json:"subject_type"`
-	UnlockedAt    *time.Time `json:"unlocked_at"`
+	AvailableAt   *time.Time   `json:"available_at"`
+	BurnedAt      *time.Time   `json:"burned_at"`
+	CreatedAt     time.Time    `json:"created_at"`
+	Hidden        bool         `json:"hidden"`
+	PassedAt      *time.Time   `json:"passed_at"`
+	ResurrectedAt *time.Time   `json:"resurrected_at"`
+	SRSStage      int          `json:"srs_stage"`
+	StartedAt     *time.Time   `json:"started_at"`
+	SubjectID     WKID         `json:"subject_id"`
+	SubjectType   WKObjectType `json:"subject_type"`
+	UnlockedAt    *time.Time   `json:"unlocked_at"`
 }
 
 type AssignmentGetParams struct {

@@ -43,19 +43,19 @@ type ReviewStatistic struct {
 }
 
 type ReviewStatisticData struct {
-	CreatedAt            time.Time  `json:"created_at"`
-	Hidden               bool       `json:"hidden"`
-	MeaningCorrect       int        `json:"meaning_correct"`
-	MeaningCurrentStreak int        `json:"meaning_current_streak"`
-	MeaningIncorrect     int        `json:"meaning_incorrect"`
-	MeaningMaxStreak     int        `json:"meaning_max_streak"`
-	PercentageCorrect    int        `json:"percentage_correct"`
-	ReadingCorrect       int        `json:"reading_correct"`
-	ReadingCurrentStreak int        `json:"reading_current_streak"`
-	ReadingIncorrect     int        `json:"reading_incorrect"`
-	ReadingMaxStreak     int        `json:"reading_max_streak"`
-	SubjectID            WKID       `json:"subject_id"`
-	SubjectType          ObjectType `json:"subject_type"`
+	CreatedAt            time.Time    `json:"created_at"`
+	Hidden               bool         `json:"hidden"`
+	MeaningCorrect       int          `json:"meaning_correct"`
+	MeaningCurrentStreak int          `json:"meaning_current_streak"`
+	MeaningIncorrect     int          `json:"meaning_incorrect"`
+	MeaningMaxStreak     int          `json:"meaning_max_streak"`
+	PercentageCorrect    int          `json:"percentage_correct"`
+	ReadingCorrect       int          `json:"reading_correct"`
+	ReadingCurrentStreak int          `json:"reading_current_streak"`
+	ReadingIncorrect     int          `json:"reading_incorrect"`
+	ReadingMaxStreak     int          `json:"reading_max_streak"`
+	SubjectID            WKID         `json:"subject_id"`
+	SubjectType          WKObjectType `json:"subject_type"`
 }
 
 type ReviewStatisticGetParams struct {
@@ -69,7 +69,7 @@ type ReviewStatisticListParams struct {
 	PercentagesGreaterThan *int
 	PercentagesLesserThan  *int
 	SubjectIDs             []WKID
-	SubjectTypes           []ObjectType
+	SubjectTypes           []WKObjectType
 	UpdatedAfter           *WKTime
 }
 

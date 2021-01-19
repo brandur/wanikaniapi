@@ -57,13 +57,13 @@ type StudyMaterial struct {
 }
 
 type StudyMaterialData struct {
-	CreatedAt       time.Time  `json:"created_at"`
-	Hidden          bool       `json:"hidden"`
-	MeaningNote     *string    `json:"meaning_note"`
-	MeaningSynonyms []string   `json:"meaning_synonyms"`
-	ReadingNote     *string    `json:"reading_note"`
-	SubjectID       WKID       `json:"subject_id"`
-	SubjectType     ObjectType `json:"subject_type"`
+	CreatedAt       time.Time    `json:"created_at"`
+	Hidden          bool         `json:"hidden"`
+	MeaningNote     *string      `json:"meaning_note"`
+	MeaningSynonyms []string     `json:"meaning_synonyms"`
+	ReadingNote     *string      `json:"reading_note"`
+	SubjectID       WKID         `json:"subject_id"`
+	SubjectType     WKObjectType `json:"subject_type"`
 }
 
 type StudyMaterialCreateParams struct {
@@ -86,7 +86,7 @@ type StudyMaterialListParams struct {
 	Hidden       *bool
 	IDs          []WKID
 	SubjectIDs   []WKID
-	SubjectTypes []ObjectType
+	SubjectTypes []WKObjectType
 	UpdatedAfter *WKTime
 }
 

@@ -66,20 +66,20 @@ func Time(t time.Time) *WKTime {
 // Constants for the various object types that may be returned in the object
 // field of WaniKani's API resources.
 const (
-	ObjectTypeAssignment             = ObjectType("assignment")
-	ObjectTypeCollection             = ObjectType("collection")
-	ObjectTypeKanji                  = ObjectType("kanji")
-	ObjectTypeLevelProgression       = ObjectType("level_progression")
-	ObjectTypeRadical                = ObjectType("radical")
-	ObjectTypeReport                 = ObjectType("report")
-	ObjectTypeReset                  = ObjectType("reset")
-	ObjectTypeReview                 = ObjectType("review")
-	ObjectTypeReviewStatistic        = ObjectType("review_statistic")
-	ObjectTypeSpacedRepetitionSystem = ObjectType("spaced_repetition_system")
-	ObjectTypeStudyMaterial          = ObjectType("study_material")
-	ObjectTypeUser                   = ObjectType("user")
-	ObjectTypeVocabulary             = ObjectType("vocabulary")
-	ObjectTypeVoiceActor             = ObjectType("voice_actor")
+	ObjectTypeAssignment             = WKObjectType("assignment")
+	ObjectTypeCollection             = WKObjectType("collection")
+	ObjectTypeKanji                  = WKObjectType("kanji")
+	ObjectTypeLevelProgression       = WKObjectType("level_progression")
+	ObjectTypeRadical                = WKObjectType("radical")
+	ObjectTypeReport                 = WKObjectType("report")
+	ObjectTypeReset                  = WKObjectType("reset")
+	ObjectTypeReview                 = WKObjectType("review")
+	ObjectTypeReviewStatistic        = WKObjectType("review_statistic")
+	ObjectTypeSpacedRepetitionSystem = WKObjectType("spaced_repetition_system")
+	ObjectTypeStudyMaterial          = WKObjectType("study_material")
+	ObjectTypeUser                   = WKObjectType("user")
+	ObjectTypeVocabulary             = WKObjectType("vocabulary")
+	ObjectTypeVoiceActor             = WKObjectType("voice_actor")
 )
 
 const WaniKaniAPIURL = "https://api.wanikani.com"
@@ -276,13 +276,11 @@ type ListParamsInterface interface {
 }
 
 type Object struct {
-	DataUpdatedAt time.Time  `json:"data_updated_at"`
-	ID            WKID       `json:"id"`
-	ObjectType    ObjectType `json:"object"`
-	URL           string     `json:"url"`
+	DataUpdatedAt time.Time    `json:"data_updated_at"`
+	ID            WKID         `json:"id"`
+	ObjectType    WKObjectType `json:"object"`
+	URL           string       `json:"url"`
 }
-
-type ObjectType string
 
 type PageObject struct {
 	Object
@@ -306,6 +304,9 @@ type RecordedRequest struct {
 
 // WKID represents a WaniKani API identifier.
 type WKID int64
+
+// WKObjectType represents a type of object in the WaniKani API.
+type WKObjectType string
 
 // WKTime is a type based on time.Time that lets us precisely control the JSON
 // marshaling for use in API parameters to endpoints.
@@ -360,7 +361,7 @@ func joinInts(ints []int, separator string) string {
 	return s
 }
 
-func joinObjectTypes(types []ObjectType, separator string) string {
+func joinObjectTypes(types []WKObjectType, separator string) string {
 	var s string
 
 	for i, typ := range types {
