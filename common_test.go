@@ -46,6 +46,7 @@ func TestClientError(t *testing.T) {
 	}, err)
 }
 
+// See also `samples/if_modified_since.go` to test this for real.
 func TestClientIfModifiedSince(t *testing.T) {
 	client := wktesting.LocalClient()
 
@@ -62,6 +63,7 @@ func TestClientIfModifiedSince(t *testing.T) {
 	assert.True(t, obj.NotModified)
 }
 
+// See also `samples/if_none_match.go` to test this for real.
 func TestClientIfNoneMatch(t *testing.T) {
 	client := wktesting.LocalClient()
 
