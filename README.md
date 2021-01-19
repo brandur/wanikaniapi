@@ -15,6 +15,7 @@ Contents:
 * [Pagination](#pagination)
 * [Logging](#logging)
 * [Handling errors](#handling-errors)
+* [Contexts](#contexts)
 * [Conditional requests](#conditional-requests)
 * [Automatic retries](#automatic-retries)
 
@@ -260,6 +261,37 @@ func main() {
 ```
 
 API calls may still return non-`APIError` errors for non-API problems (e.g. network error, TLS error, unmarshaling error, etc.).
+
+### Contexts
+
+Go contexts can be passed through `Params`:
+
+``` go
+package main
+
+import (
+    "context"
+
+    "github.com/brandur/wanikaniapi"
+)
+
+func main() {
+    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+    })
+
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+		Params: wanikaniapi.Params{
+			Context: &ctx,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+    ...
+}
+```
 
 ### Conditional requests
 

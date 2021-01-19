@@ -1,6 +1,7 @@
 package wanikaniapi_test
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -10,6 +11,22 @@ import (
 	"github.com/brandur/wanikaniapi/wktesting"
 	assert "github.com/stretchr/testify/require"
 )
+
+func TestClientContext(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	ctx := context.Background()
+
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+		Params: wanikaniapi.Params{
+			Context: &ctx,
+		},
+	})
+
+	// This doesn't really text anything, we may want to test this with with an
+	// actual API call.
+	assert.NoError(t, err)
+}
 
 func TestClientError(t *testing.T) {
 	client := wktesting.LocalClient()

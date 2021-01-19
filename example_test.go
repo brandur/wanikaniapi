@@ -1,6 +1,7 @@
 package wanikaniapi_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"time"
@@ -106,6 +107,23 @@ func ExampleClient_handlingErrors() {
 		} else {
 			fmt.Printf("other error: %+v\n", err)
 		}
+	}
+}
+
+func ExampleClient_contexts() {
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
+
+	ctx := context.Background()
+
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+		Params: wanikaniapi.Params{
+			Context: &ctx,
+		},
+	})
+	if err != nil {
+		panic(err)
 	}
 }
 

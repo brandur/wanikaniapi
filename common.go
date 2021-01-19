@@ -2,6 +2,7 @@ package wanikaniapi
 
 import (
 	"bytes"
+	"context"
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
@@ -275,7 +276,13 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 		reqReader = bytes.NewReader(reqBytes)
 	}
 
-	req, err := http.NewRequest(method, url, reqReader)
+	var err error
+	var req *http.Request
+	if params.Context != nil {
+		req, err = http.NewRequestWithContext(*params.Context, method, url, reqReader)
+	} else {
+		req, err = http.NewRequest(method, url, reqReader)
+	}
 	if err != nil {
 		return err
 	}
@@ -491,6 +498,9 @@ type PageObject struct {
 
 // Params contains the common fields of every resource in the WaniKani API.
 type Params struct {
+	// Context is a Go context that's injected into API requests.
+	Context *context.Context `json:"-"`
+
 	// IfModifiedSince sets a value for the `If-Modified-Since` header so that
 	// a response is conditional on an update since the last given time.
 	IfModifiedSince *WKTime `json:"-"`
