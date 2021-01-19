@@ -188,7 +188,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("num subjects: %v", len(subjects))
+	fmt.Printf("num subjects: %v\n", len(subjects))
 }
 ```
 
@@ -231,7 +231,33 @@ Some popular loggers like [Logrus](https://github.com/sirupsen/logrus/) and Zap'
 
 ### Handling errors
 
-TODO
+API errors are returned as the special error struct [`*APIError`](https://pkg.go.dev/github.com/brandur/wanikaniapi#APIError):
+
+``` go
+package main
+
+import (
+	"github.com/brandur/wanikaniapi"
+)
+
+func main() {
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+	})
+
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+	if err != nil {
+		if apiErr, ok := err.(*wanikaniapi.APIError); ok {
+			fmt.Printf("WaniKani API error; status: %v, message: %s\n",
+				apiErr.StatusCode, apiErr.Message)
+		} else {
+			fmt.Printf("other error: %+v\n", err)
+		}
+	}
+
+    ...
+}
+```
 
 ### Conditional requests
 

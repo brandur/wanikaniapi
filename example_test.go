@@ -84,11 +84,27 @@ func ExampleClient_PageFully() {
 		panic(err)
 	}
 
-	fmt.Printf("num subjects: %v", len(subjects))
+	fmt.Printf("num subjects: %v\n", len(subjects))
 }
 
 func ExampleClient_logging() {
 	_ = wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
 		Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
 	})
+}
+
+func ExampleClient_handlingErrors() {
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
+
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+	if err != nil {
+		if apiErr, ok := err.(*wanikaniapi.APIError); ok {
+			fmt.Printf("WaniKani API error; status: %v, message: %s\n",
+				apiErr.StatusCode, apiErr.Message)
+		} else {
+			fmt.Printf("other error: %+v\n", err)
+		}
+	}
 }

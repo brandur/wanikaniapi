@@ -85,6 +85,31 @@ const (
 const WaniKaniAPIURL = "https://api.wanikani.com"
 const WaniKaniRevision = "20170710"
 
+// APIError represents an HTTP status API error that came back from WaniKani's
+// API. It may be caused by a variety of problems like a bad access token
+// resulting in a 401 Unauthorized or making too many requests resulting in a
+// 429 Too Many Requests.
+//
+// Inspect Code and Error for details, and see the API reference for more
+// information:
+//
+// https://docs.api.wanikani.com/20170710/#errors
+type APIError struct {
+	// Error is the error message that came back with the API error.
+	//
+	// This is called Message instead of Error so as not to conflict with the
+	// Error function on Go's error interface.
+	Message string `json:"error"`
+
+	// StatusCode is the HTTP status code that came back with the API error.
+	StatusCode int `json:"code"`
+}
+
+// Error returns the error message that came back with the API error.
+func (e APIError) Error() string {
+	return e.Message
+}
+
 type Client struct {
 	APIToken string
 	Logger   LeveledLoggerInterface
@@ -257,31 +282,6 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 	}
 
 	return nil
-}
-
-// APIError represents an HTTP status API error that came back from WaniKani's
-// API. It may be caused by a variety of problems like a bad access token
-// resulting in a 401 Unauthorized or making too many requests resulting in a
-// 429 Too Many Requests.
-//
-// Inspect Code and Error for details, and see the API reference for more
-// information:
-//
-// https://docs.api.wanikani.com/20170710/#errors
-type APIError struct {
-	// Code is the HTTP status code that came back with the API error.
-	Code  int    `json:"code"`
-
-	// Error is the error message that came back with the API error.
-	//
-	// This is called Message instead of Error so as not to conflict with the
-	// Error function on Go's error interface.
-	Message string `json:"error"`
-}
-
-// Error returns the error message that came back with the API error.
-func (e APIError) Error() string {
-	return e.Message
 }
 
 type ClientConfig struct {

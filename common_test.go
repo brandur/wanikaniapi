@@ -24,8 +24,8 @@ func TestClientError(t *testing.T) {
 	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
 
 	assert.Equal(t, &wanikaniapi.APIError{
-		Code: http.StatusTooManyRequests,
-		Message: "You are rate limited",
+		StatusCode: http.StatusTooManyRequests,
+		Message:    "You are rate limited",
 	}, err)
 }
 
