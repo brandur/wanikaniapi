@@ -405,3 +405,9 @@ All code expects to be formatted. Check the current state with:
 ``` sh
 scripts/check_gofmt.sh
 ```
+
+Format code with:
+
+``` sh
+gofmt -w -s *.go
+```
