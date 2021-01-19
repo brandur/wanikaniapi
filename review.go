@@ -16,21 +16,21 @@ import (
 //////////////////////////////////////////////////////////////////////////////
 
 func (c *Client) ReviewCreate(params *ReviewCreateParams) (*Review, error) {
-	wrapper := &reviewCreateParamsWrapper{Params: params}
+	wrapper := &reviewCreateParamsWrapper{Params: params.Params, Review: params}
 	obj := &Review{}
-	err := c.request("POST", "/v2/reviews", "", wrapper, obj)
+	err := c.request("POST", "/v2/reviews", params, wrapper, obj)
 	return obj, err
 }
 
 func (c *Client) ReviewGet(params *ReviewGetParams) (*Review, error) {
 	obj := &Review{}
-	err := c.request("GET", "/v2/reviews/"+strconv.FormatInt(int64(*params.ID), 10), "", nil, obj)
+	err := c.request("GET", "/v2/reviews/"+strconv.FormatInt(int64(*params.ID), 10), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) ReviewList(params *ReviewListParams) (*ReviewPage, error) {
 	obj := &ReviewPage{}
-	err := c.request("GET", "/v2/reviews", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/reviews", params, nil, obj)
 	return obj, err
 }
 
@@ -59,7 +59,8 @@ type ReviewCreateParams struct {
 }
 
 type reviewCreateParamsWrapper struct {
-	Params *ReviewCreateParams `json:"review"`
+	*Params
+	Review *ReviewCreateParams `json:"review"`
 }
 
 type ReviewData struct {

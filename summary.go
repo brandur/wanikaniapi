@@ -16,7 +16,7 @@ import (
 
 func (c *Client) SummaryGet(params *SummaryGetParams) (*Summary, error) {
 	obj := &Summary{}
-	err := c.request("GET", "/v2/summary", "", nil, obj)
+	err := c.request("GET", "/v2/summary", params, nil, obj)
 	return obj, err
 }
 

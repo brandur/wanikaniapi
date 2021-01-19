@@ -214,12 +214,13 @@ func (c *Client) PageFully(onPage func(*WKID) (*PageObject, error)) error {
 	return nil
 }
 
-func (c *Client) request(method, path, query string, reqData interface{}, respData interface{}) error {
+func (c *Client) request(method, path string, params ParamsInterface, reqData interface{}, respData interface{}) error {
 	if c.APIToken == "" && !c.RecordMode {
 		return fmt.Errorf("wanikaniapi.Client.APIToken must be set to make a live API call")
 	}
 
 	url := c.baseURL + path
+	query := params.EncodeToQuery()
 	if query != "" {
 		url += "?" + query
 	}
@@ -279,6 +280,10 @@ func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, re
 
 	req.Header.Set("Authorization", "Bearer "+c.APIToken)
 	req.Header.Set("Wanikani-Revision", WaniKaniRevision)
+
+	// if 
+
+	// Body content type for mutating requests
 	if reqReader != nil {
 		req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	}
@@ -456,6 +461,26 @@ type Params struct {
 	// IfNoneMatch sets a value for the `If-None-Match` header so that a
 	// response is conditional on an update since the last given Etag.
 	IfNoneMatch *string
+}
+
+// EncodeToQuery encodes the parameters to be included in a query string.
+// Defaults to encoding to an empty string.
+func (p *Params) EncodeToQuery() string {
+	return ""
+}
+
+// GetParams returns the underlying Params object.
+func (p *Params) GetParams() *Params {
+	return p
+}
+
+// ParamsInterface is a common interface implemented by parameters.
+type ParamsInterface interface {
+	// EncodeToQuery encodes the parameters to be included in a query string.
+	EncodeToQuery() string
+
+	// GetParams returns the underlying Params object.
+	GetParams() *Params
 }
 
 // RecordedRequest is a request recorded when RecordMode is on.

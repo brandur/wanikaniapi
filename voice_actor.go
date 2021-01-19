@@ -16,13 +16,13 @@ import (
 
 func (c *Client) VoiceActorGet(params *VoiceActorGetParams) (*VoiceActor, error) {
 	obj := &VoiceActor{}
-	err := c.request("GET", "/v2/voice_actors/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
+	err := c.request("GET", "/v2/voice_actors/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) VoiceActorList(params *VoiceActorListParams) (*VoiceActorPage, error) {
 	obj := &VoiceActorPage{}
-	err := c.request("GET", "/v2/voice_actors", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/voice_actors", params, nil, obj)
 	return obj, err
 }
 

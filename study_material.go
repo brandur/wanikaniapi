@@ -16,28 +16,28 @@ import (
 //////////////////////////////////////////////////////////////////////////////
 
 func (c *Client) StudyMaterialCreate(params *StudyMaterialCreateParams) (*StudyMaterial, error) {
-	wrapper := &studyMaterialCreateParamsWrapper{Params: params}
+	wrapper := &studyMaterialCreateParamsWrapper{Params: params.Params, StudyMaterial: params}
 	obj := &StudyMaterial{}
-	err := c.request("POST", "/v2/study_materials", "", wrapper, obj)
+	err := c.request("POST", "/v2/study_materials", params, wrapper, obj)
 	return obj, err
 }
 
 func (c *Client) StudyMaterialGet(params *StudyMaterialGetParams) (*StudyMaterial, error) {
 	obj := &StudyMaterial{}
-	err := c.request("GET", "/v2/study_materials/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
+	err := c.request("GET", "/v2/study_materials/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) StudyMaterialList(params *StudyMaterialListParams) (*StudyMaterialPage, error) {
 	obj := &StudyMaterialPage{}
-	err := c.request("GET", "/v2/study_materials", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/study_materials", params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) StudyMaterialUpdate(params *StudyMaterialUpdateParams) (*StudyMaterial, error) {
-	wrapper := &studyMaterialUpdateParamsWrapper{Params: params}
+	wrapper := &studyMaterialUpdateParamsWrapper{Params: params.Params, StudyMaterial: params}
 	obj := &StudyMaterial{}
-	err := c.request("PUT", "/v2/study_materials/"+strconv.Itoa(int(*params.ID)), "", wrapper, obj)
+	err := c.request("PUT", "/v2/study_materials/"+strconv.Itoa(int(*params.ID)), params, wrapper, obj)
 	return obj, err
 }
 
@@ -75,7 +75,8 @@ type StudyMaterialCreateParams struct {
 }
 
 type studyMaterialCreateParamsWrapper struct {
-	Params *StudyMaterialCreateParams `json:"study_material"`
+	*Params
+	StudyMaterial *StudyMaterialCreateParams `json:"study_material"`
 }
 
 type StudyMaterialGetParams struct {
@@ -132,5 +133,6 @@ type StudyMaterialUpdateParams struct {
 }
 
 type studyMaterialUpdateParamsWrapper struct {
-	Params *StudyMaterialUpdateParams `json:"study_material"`
+	*Params
+	StudyMaterial *StudyMaterialUpdateParams `json:"study_material"`
 }

@@ -16,14 +16,14 @@ import (
 
 func (c *Client) UserGet(params *UserGetParams) (*User, error) {
 	obj := &User{}
-	err := c.request("GET", "/v2/user", "", nil, obj)
+	err := c.request("GET", "/v2/user", params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) UserUpdate(params *UserUpdateParams) (*User, error) {
-	wrapper := &userUpdateParamsWrapper{Params: params}
+	wrapper := &userUpdateParamsWrapper{Params: params.Params, User: params}
 	obj := &User{}
-	err := c.request("PUT", "/v2/user", "", wrapper, obj)
+	err := c.request("PUT", "/v2/user", params, wrapper, obj)
 	return obj, err
 }
 
@@ -88,5 +88,6 @@ type UserUpdatePreferencesParams struct {
 }
 
 type userUpdateParamsWrapper struct {
-	Params *UserUpdateParams `json:"user"`
+	*Params
+	User *UserUpdateParams `json:"user"`
 }

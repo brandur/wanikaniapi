@@ -19,13 +19,13 @@ import (
 
 func (c *Client) SubjectGet(params *SubjectGetParams) (*Subject, error) {
 	obj := &Subject{}
-	err := c.request("GET", "/v2/subjects/"+strconv.FormatInt(int64(*params.ID), 10), "", nil, obj)
+	err := c.request("GET", "/v2/subjects/"+strconv.FormatInt(int64(*params.ID), 10), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) SubjectList(params *SubjectListParams) (*SubjectPage, error) {
 	obj := &SubjectPage{}
-	err := c.request("GET", "/v2/subjects", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/subjects", params, nil, obj)
 	return obj, err
 }
 

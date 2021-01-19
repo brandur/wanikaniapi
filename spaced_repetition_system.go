@@ -17,13 +17,13 @@ import (
 
 func (c *Client) SpacedRepetitionSystemGet(params *SpacedRepetitionSystemGetParams) (*SpacedRepetitionSystem, error) {
 	obj := &SpacedRepetitionSystem{}
-	err := c.request("GET", "/v2/spaced_repetition_systems/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
+	err := c.request("GET", "/v2/spaced_repetition_systems/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) SpacedRepetitionSystemList(params *SpacedRepetitionSystemListParams) (*SpacedRepetitionSystemPage, error) {
 	obj := &SpacedRepetitionSystemPage{}
-	err := c.request("GET", "/v2/spaced_repetition_systems", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/spaced_repetition_systems", params, nil, obj)
 	return obj, err
 }
 

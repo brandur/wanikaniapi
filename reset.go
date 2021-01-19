@@ -17,13 +17,13 @@ import (
 
 func (c *Client) ResetGet(params *ResetGetParams) (*Reset, error) {
 	obj := &Reset{}
-	err := c.request("GET", "/v2/resets/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
+	err := c.request("GET", "/v2/resets/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) ResetList(params *ResetListParams) (*ResetPage, error) {
 	obj := &ResetPage{}
-	err := c.request("GET", "/v2/resets", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/resets", params, nil, obj)
 	return obj, err
 }
 

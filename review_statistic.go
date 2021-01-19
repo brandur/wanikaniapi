@@ -17,13 +17,13 @@ import (
 
 func (c *Client) ReviewStatisticGet(params *ReviewStatisticGetParams) (*ReviewStatistic, error) {
 	obj := &ReviewStatistic{}
-	err := c.request("GET", "/v2/review_statistics/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
+	err := c.request("GET", "/v2/review_statistics/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) ReviewStatisticList(params *ReviewStatisticListParams) (*ReviewStatisticPage, error) {
 	obj := &ReviewStatisticPage{}
-	err := c.request("GET", "/v2/review_statistics", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/review_statistics", params, nil, obj)
 	return obj, err
 }
 

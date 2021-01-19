@@ -17,13 +17,13 @@ import (
 
 func (c *Client) LevelProgressionGet(params *LevelProgressionGetParams) (*LevelProgression, error) {
 	obj := &LevelProgression{}
-	err := c.request("GET", "/v2/level_progressions/"+strconv.Itoa(int(*params.ID)), "", nil, obj)
+	err := c.request("GET", "/v2/level_progressions/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
 func (c *Client) LevelProgressionList(params *LevelProgressionListParams) (*LevelProgressionPage, error) {
 	obj := &LevelProgressionPage{}
-	err := c.request("GET", "/v2/level_progressions", params.EncodeToQuery(), nil, obj)
+	err := c.request("GET", "/v2/level_progressions", params, nil, obj)
 	return obj, err
 }
 
