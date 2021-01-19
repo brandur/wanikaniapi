@@ -259,6 +259,6 @@ type SubjectMeaningObject struct {
 }
 
 type SubjectPage struct {
-	*PageObject
+	PageObject
 	Data []*Subject `json:"data"`
 }

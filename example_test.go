@@ -78,7 +78,7 @@ func ExampleClient_PageFully() {
 		}
 
 		subjects = append(subjects, page.Data...)
-		return page.PageObject, nil
+		return &page.PageObject, nil
 	})
 	if err != nil {
 		panic(err)

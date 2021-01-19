@@ -75,6 +75,6 @@ func (p *VoiceActorListParams) EncodeToQuery() string {
 }
 
 type VoiceActorPage struct {
-	*PageObject
+	PageObject
 	Data []*VoiceActor `json:"data"`
 }

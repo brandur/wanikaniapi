@@ -80,6 +80,6 @@ func (p *LevelProgressionListParams) EncodeToQuery() string {
 }
 
 type LevelProgressionPage struct {
-	*PageObject
+	PageObject
 	Data []*LevelProgression `json:"data"`
 }

@@ -76,6 +76,6 @@ func (p *ResetListParams) EncodeToQuery() string {
 }
 
 type ResetPage struct {
-	*PageObject
+	PageObject
 	Data []*Reset `json:"data"`
 }

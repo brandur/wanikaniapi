@@ -51,7 +51,7 @@ type SummaryLesson struct {
 }
 
 type SummaryPage struct {
-	*PageObject
+	PageObject
 	Data []*Summary `json:"data"`
 }
 

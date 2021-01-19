@@ -29,6 +29,38 @@ func TestClientError(t *testing.T) {
 	}, err)
 }
 
+func TestClientIfModifiedSince(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	client.RecordedResponses = []*wanikaniapi.RecordedResponse{
+		{StatusCode: http.StatusNotModified, Body: []byte(`{}`)},
+	}
+
+	obj, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+		Params: wanikaniapi.Params{
+			IfModifiedSince: wanikaniapi.Time(time.Now()),
+		},
+	})
+	assert.NoError(t, err)
+	assert.True(t, obj.NotModified)
+}
+
+func TestClientIfNoneMatch(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	client.RecordedResponses = []*wanikaniapi.RecordedResponse{
+		{StatusCode: http.StatusNotModified, Body: []byte(`{}`)},
+	}
+
+	obj, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+		Params: wanikaniapi.Params{
+			IfNoneMatch: wanikaniapi.String("an-etag"),
+		},
+	})
+	assert.NoError(t, err)
+	assert.True(t, obj.NotModified)
+}
+
 func TestClientRetry(t *testing.T) {
 	client := wktesting.LocalClient()
 	client.MaxRetries = 2
@@ -124,7 +156,7 @@ func TestPageFullyLocal(t *testing.T) {
 		}
 
 		subjects = append(subjects, page.Data...)
-		return page.PageObject, nil
+		return &page.PageObject, nil
 	})
 	assert.NoError(t, err)
 
@@ -175,7 +207,7 @@ func TestPageFullyLive(t *testing.T) {
 		}
 
 		subjects = append(subjects, page.Data...)
-		return page.PageObject, nil
+		return &page.PageObject, nil
 	})
 	assert.NoError(t, err)
 

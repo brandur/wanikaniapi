@@ -122,7 +122,7 @@ func (p *StudyMaterialListParams) EncodeToQuery() string {
 }
 
 type StudyMaterialPage struct {
-	*PageObject
+	PageObject
 	Data []*StudyMaterial `json:"data"`
 }
 

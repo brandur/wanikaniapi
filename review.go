@@ -112,6 +112,6 @@ func (p *ReviewListParams) EncodeToQuery() string {
 }
 
 type ReviewPage struct {
-	*PageObject
+	PageObject
 	Data []*Review `json:"data"`
 }

@@ -214,7 +214,7 @@ func (c *Client) PageFully(onPage func(*WKID) (*PageObject, error)) error {
 	return nil
 }
 
-func (c *Client) request(method, path string, params ParamsInterface, reqData interface{}, respData interface{}) error {
+func (c *Client) request(method, path string, params ParamsInterface, reqData interface{}, respObj ObjectInterface) error {
 	if c.APIToken == "" && !c.RecordMode {
 		return fmt.Errorf("wanikaniapi.Client.APIToken must be set to make a live API call")
 	}
@@ -241,7 +241,7 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 	var err error
 	var numRetries int
 	for {
-		err = c.requestOne(method, path, query, url, params.GetParams(), reqBytes, respData)
+		err = c.requestOne(method, path, query, url, params.GetParams(), reqBytes, respObj)
 		fmt.Printf("retry error = %+v\n", err)
 		if !c.retryableErr(err) {
 			break
@@ -269,7 +269,7 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 	return err
 }
 
-func (c *Client) requestOne(method, path, query, url string, params *Params, reqBytes []byte, respData interface{}) error {
+func (c *Client) requestOne(method, path, query, url string, params *Params, reqBytes []byte, respObj ObjectInterface) error {
 	var reqReader io.Reader
 	if reqBytes != nil {
 		reqReader = bytes.NewReader(reqBytes)
@@ -286,7 +286,7 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 	if params.IfModifiedSince != nil {
 		req.Header.Set(
 			"If-Modified-Since",
-			params.IfModifiedSince.UTC().Format("Mon, 02 Jan 2006 15:04:05")+" GMT",
+			time.Time(*params.IfModifiedSince).UTC().Format("Mon, 02 Jan 2006 15:04:05")+" GMT",
 		)
 	}
 	if params.IfNoneMatch != nil {
@@ -334,6 +334,12 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 		}
 	}
 
+	if statusCode == http.StatusNotModified {
+		obj := respObj.GetObject()
+		obj.NotModified = true
+		return nil
+	}
+
 	if statusCode != http.StatusOK {
 		var apiErr APIError
 		err := json.Unmarshal(respBytes, &apiErr)
@@ -344,7 +350,7 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 		return &apiErr
 	}
 
-	err = json.Unmarshal(respBytes, respData)
+	err = json.Unmarshal(respBytes, respObj)
 	if err != nil {
 		return fmt.Errorf("error unmarshaling response: %v", err)
 	}
@@ -441,6 +447,16 @@ type Object struct {
 	URL        string       `json:"url"`
 }
 
+// GetObject returns the underlying Object object.
+func (o *Object) GetObject() *Object {
+	return o
+}
+
+// ObjectInterface is a common interface implemented by response structures.
+type ObjectInterface interface {
+	GetObject() *Object
+}
+
 // PageObject contains the common fields of every list resource in the WaniKani
 // API.
 type PageObject struct {
@@ -459,7 +475,7 @@ type PageObject struct {
 type Params struct {
 	// IfModifiedSince sets a value for the `If-Modified-Since` header so that
 	// a response is conditional on an update since the last given time.
-	IfModifiedSince *time.Time `json:"-"`
+	IfModifiedSince *WKTime `json:"-"`
 
 	// IfNoneMatch sets a value for the `If-None-Match` header so that a
 	// response is conditional on an update since the last given Etag.
@@ -474,9 +490,6 @@ func (p *Params) EncodeToQuery() string {
 
 // GetParams returns the underlying Params object.
 func (p *Params) GetParams() *Params {
-	if p == nil {
-		return nil
-	}
 	return p
 }
 

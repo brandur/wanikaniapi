@@ -86,6 +86,6 @@ func (p *SpacedRepetitionSystemListParams) EncodeToQuery() string {
 }
 
 type SpacedRepetitionSystemPage struct {
-	*PageObject
+	PageObject
 	Data []*SpacedRepetitionSystem `json:"data"`
 }

@@ -152,7 +152,7 @@ func (p *AssignmentListParams) EncodeToQuery() string {
 }
 
 type AssignmentPage struct {
-	*PageObject
+	PageObject
 	Data []*Assignment `json:"data"`
 }
 
