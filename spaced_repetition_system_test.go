@@ -13,7 +13,7 @@ func TestSpacedRepetitionSystemList(t *testing.T) {
 	client := wktesting.LocalClient()
 
 	_, err := client.SpacedRepetitionSystemList(&wanikaniapi.SpacedRepetitionSystemListParams{
-		IDs: []wanikaniapi.ID{1, 2, 3},
+		IDs: []wanikaniapi.WKID{1, 2, 3},
 	})
 	assert.NoError(t, err)
 
@@ -28,7 +28,7 @@ func TestSpacedRepetitionSystemGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
 	_, err := client.SpacedRepetitionSystemGet(&wanikaniapi.SpacedRepetitionSystemGetParams{
-		ID: wanikaniapi.IDPtr(123),
+		ID: wanikaniapi.ID(123),
 	})
 	assert.NoError(t, err)
 

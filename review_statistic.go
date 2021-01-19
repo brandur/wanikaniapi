@@ -54,21 +54,21 @@ type ReviewStatisticData struct {
 	ReadingCurrentStreak int        `json:"reading_current_streak"`
 	ReadingIncorrect     int        `json:"reading_incorrect"`
 	ReadingMaxStreak     int        `json:"reading_max_streak"`
-	SubjectID            ID         `json:"subject_id"`
+	SubjectID            WKID       `json:"subject_id"`
 	SubjectType          ObjectType `json:"subject_type"`
 }
 
 type ReviewStatisticGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type ReviewStatisticListParams struct {
 	*ListParams
 	Hidden                 *bool
-	IDs                    []ID
+	IDs                    []WKID
 	PercentagesGreaterThan *int
 	PercentagesLesserThan  *int
-	SubjectIDs             []ID
+	SubjectIDs             []WKID
 	SubjectTypes           []ObjectType
 	UpdatedAfter           *WKTime
 }

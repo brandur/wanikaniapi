@@ -13,7 +13,7 @@ func TestResetList(t *testing.T) {
 	client := wktesting.LocalClient()
 
 	_, err := client.ResetList(&wanikaniapi.ResetListParams{
-		IDs: []wanikaniapi.ID{1, 2, 3},
+		IDs: []wanikaniapi.WKID{1, 2, 3},
 	})
 	assert.NoError(t, err)
 
@@ -27,7 +27,7 @@ func TestResetList(t *testing.T) {
 func TestResetGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.ResetGet(&wanikaniapi.ResetGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.ResetGet(&wanikaniapi.ResetGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]

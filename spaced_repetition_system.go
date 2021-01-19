@@ -60,12 +60,12 @@ type SpacedRepetitionSystemStagedObject struct {
 }
 
 type SpacedRepetitionSystemGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type SpacedRepetitionSystemListParams struct {
 	*ListParams
-	IDs          []ID
+	IDs          []WKID
 	UpdatedAfter *WKTime
 }
 

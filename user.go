@@ -44,7 +44,7 @@ type User struct {
 
 type UserData struct {
 	CurrentVacationStartedAt *time.Time        `json:"current_vacation_started_at"`
-	ID                       string            `json:"id"`
+	WKID                     string            `json:"id"`
 	Level                    int               `json:"level"`
 	Preferences              *UserPreferences  `json:"preferences"`
 	ProfileURL               string            `json:"profile_url"`
@@ -57,7 +57,7 @@ type UserGetParams struct {
 }
 
 type UserPreferences struct {
-	DefaultVoiceActorID        ID     `json:"default_voice_actor_id"`
+	DefaultVoiceActorID        WKID   `json:"default_voice_actor_id"`
 	LessonsAutoplayAudio       bool   `json:"lessons_autoplay_audio"`
 	LessonsBatchSize           int    `json:"lessons_batch_size"`
 	LessonsPresentationOrder   string `json:"lessons_presentation_order"`
@@ -77,7 +77,7 @@ type UserUpdateParams struct {
 }
 
 type UserUpdatePreferencesParams struct {
-	DefaultVoiceActorID        *ID     `json:"default_voice_actor_id,omitempty"`
+	DefaultVoiceActorID        *WKID   `json:"default_voice_actor_id,omitempty"`
 	LessonsAutoplayAudio       *bool   `json:"lessons_autoplay_audio,omitempty"`
 	LessonsBatchSize           *int    `json:"lessons_batch_size,omitempty"`
 	LessonsPresentationOrder   *string `json:"lessons_presentation_order,omitempty"`

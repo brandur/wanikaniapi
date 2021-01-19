@@ -57,13 +57,13 @@ type AssignmentData struct {
 	ResurrectedAt *time.Time `json:"resurrected_at"`
 	SRSStage      int        `json:"srs_stage"`
 	StartedAt     *time.Time `json:"started_at"`
-	SubjectID     ID         `json:"subject_id"`
+	SubjectID     WKID       `json:"subject_id"`
 	SubjectType   ObjectType `json:"subject_type"`
 	UnlockedAt    *time.Time `json:"unlocked_at"`
 }
 
 type AssignmentGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type AssignmentListParams struct {
@@ -72,14 +72,14 @@ type AssignmentListParams struct {
 	AvailableBefore                *WKTime
 	Burned                         *bool
 	Hidden                         *bool
-	IDs                            []ID
+	IDs                            []WKID
 	ImmediatelyAvailableForLessons *bool
 	ImmediatelyAvailableForReview  *bool
 	InReview                       *bool
 	Levels                         []int
 	SRSStages                      []int
 	Started                        *bool
-	SubjectIDs                     []ID
+	SubjectIDs                     []WKID
 	Unlocked                       *bool
 	UpdatedAfter                   *WKTime
 }
@@ -154,6 +154,6 @@ type AssignmentPage struct {
 }
 
 type AssignmentStartParams struct {
-	ID        *ID     `json:"-"`
+	ID        *WKID   `json:"-"`
 	StartedAt *WKTime `json:"started_at"`
 }

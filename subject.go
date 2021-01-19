@@ -99,20 +99,20 @@ type SubjectCommonData struct {
 	LessonPosition           int                              `json:"lesson_position"`
 	Meanings                 []*SubjectMeaningObject          `json:"meanings"`
 	Slug                     string                           `json:"slug"`
-	SpacedRepetitionSystemID ID                               `json:"spaced_repetition_system_id"`
+	SpacedRepetitionSystemID WKID                             `json:"spaced_repetition_system_id"`
 }
 
 type SubjectKanjiData struct {
 	SubjectCommonData
 
-	AmalgamationSubjectIDs    []ID                   `json:"amalgamation_subject_ids"`
+	AmalgamationSubjectIDs    []WKID                 `json:"amalgamation_subject_ids"`
 	Characters                string                 `json:"characters"`
-	ComponentSubjectIDs       []ID                   `json:"component_subject_ids"`
+	ComponentSubjectIDs       []WKID                 `json:"component_subject_ids"`
 	MeaningHint               *string                `json:"meaning_hint"`
 	ReadingHint               *string                `json:"reading_hint"`
 	ReadingMnemonic           string                 `json:"mnemonic_hint"`
 	Readings                  []*SubjectKanjiReading `json:"readings"`
-	VisuallySimilarSubjectIDs []ID                   `json:"visually_similar_subject_ids"`
+	VisuallySimilarSubjectIDs []WKID                 `json:"visually_similar_subject_ids"`
 }
 
 type SubjectKanjiReading struct {
@@ -148,7 +148,7 @@ const (
 type SubjectRadicalData struct {
 	SubjectCommonData
 
-	AmalgamationSubjectIDs []ID                            `json:"amalgamation_subject_ids"`
+	AmalgamationSubjectIDs []WKID                          `json:"amalgamation_subject_ids"`
 	CharacterImages        []*SubjectRadicalCharacterImage `json:"character_images"`
 	Characters             *string                         `json:"characters"`
 }
@@ -162,7 +162,7 @@ type SubjectVocabularyData struct {
 	SubjectCommonData
 
 	Characters           string                                 `json:"characters"`
-	ComponentSubjectIDs  []ID                                   `json:"component_subject_ids"`
+	ComponentSubjectIDs  []WKID                                 `json:"component_subject_ids"`
 	ContextSentences     []*SubjectVocabularyContextSentence    `json:"context_sentences"`
 	MeaningMnemonic      string                                 `json:"meaning_mnenomic"`
 	PartsOfSpeech        []string                               `json:"parts_of_speech"`
@@ -194,12 +194,12 @@ type SubjectVocabularyReading struct {
 }
 
 type SubjectGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type SubjectListParams struct {
 	*ListParams
-	IDs          []ID
+	IDs          []WKID
 	Hidden       *bool
 	Levels       []int
 	Slugs        []string

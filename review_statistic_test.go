@@ -14,7 +14,7 @@ func TestReviewStatisticList(t *testing.T) {
 
 	_, err := client.ReviewStatisticList(&wanikaniapi.ReviewStatisticListParams{
 		Hidden: wanikaniapi.Bool(true),
-		IDs:    []wanikaniapi.ID{1, 2, 3},
+		IDs:    []wanikaniapi.WKID{1, 2, 3},
 	})
 	assert.NoError(t, err)
 
@@ -28,7 +28,7 @@ func TestReviewStatisticList(t *testing.T) {
 func TestReviewStatisticGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.ReviewStatisticGet(&wanikaniapi.ReviewStatisticGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.ReviewStatisticGet(&wanikaniapi.ReviewStatisticGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]

@@ -53,7 +53,7 @@ func TestPageFullyLocal(t *testing.T) {
 	}
 
 	var subjects []*wanikaniapi.Subject
-	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
+	err := client.PageFully(func(id *wanikaniapi.WKID) (*wanikaniapi.PageObject, error) {
 		page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 			ListParams: &wanikaniapi.ListParams{
 				PageAfterID: id,
@@ -97,7 +97,7 @@ func TestPageFullyLive(t *testing.T) {
 
 	var i int
 	var subjects []*wanikaniapi.Subject
-	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
+	err := client.PageFully(func(id *wanikaniapi.WKID) (*wanikaniapi.PageObject, error) {
 		// Quit after convincing ourselves that we can page by going through a
 		// few pages. This saves time and API calls.
 		i++

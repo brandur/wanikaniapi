@@ -53,12 +53,12 @@ type LevelProgressionData struct {
 }
 
 type LevelProgressionGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type LevelProgressionListParams struct {
 	*ListParams
-	IDs          []ID
+	IDs          []WKID
 	UpdatedAfter *WKTime
 }
 

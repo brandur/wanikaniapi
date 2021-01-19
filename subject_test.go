@@ -28,7 +28,7 @@ func TestSubjectList(t *testing.T) {
 func TestSubjectGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.SubjectGet(&wanikaniapi.SubjectGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.SubjectGet(&wanikaniapi.SubjectGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]

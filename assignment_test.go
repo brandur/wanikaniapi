@@ -30,7 +30,7 @@ func TestAssignmentList(t *testing.T) {
 func TestAssignmentGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.AssignmentGet(&wanikaniapi.AssignmentGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.AssignmentGet(&wanikaniapi.AssignmentGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
@@ -45,7 +45,7 @@ func TestAssignmentStart(t *testing.T) {
 
 	startedAt := time.Now()
 	_, err := client.AssignmentStart(&wanikaniapi.AssignmentStartParams{
-		ID:        wanikaniapi.IDPtr(123),
+		ID:        wanikaniapi.ID(123),
 		StartedAt: wanikaniapi.Time(startedAt),
 	})
 	assert.NoError(t, err)

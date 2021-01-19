@@ -46,7 +46,7 @@ type SummaryGetParams struct {
 
 type SummaryLesson struct {
 	AvailableAt time.Time `json:"available_at"`
-	SubjectIDs  []ID      `json:"subject_ids"`
+	SubjectIDs  []WKID    `json:"subject_ids"`
 }
 
 type SummaryPage struct {
@@ -56,5 +56,5 @@ type SummaryPage struct {
 
 type SummaryReview struct {
 	AvailableAt time.Time `json:"available_at"`
-	SubjectIDs  []ID      `json:"subject_ids"`
+	SubjectIDs  []WKID    `json:"subject_ids"`
 }

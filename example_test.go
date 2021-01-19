@@ -38,7 +38,7 @@ func ExampleClient_settingAPIParameters() {
 	})
 
 	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
-		IDs:          []wanikaniapi.ID{1, 2, 3},
+		IDs:          []wanikaniapi.WKID{1, 2, 3},
 		UpdatedAfter: wanikaniapi.Time(time.Now()),
 	})
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleClient_PageFully() {
 	})
 
 	var subjects []*wanikaniapi.Subject
-	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
+	err := client.PageFully(func(id *wanikaniapi.WKID) (*wanikaniapi.PageObject, error) {
 		page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 			ListParams: &wanikaniapi.ListParams{
 				PageAfterID: id,

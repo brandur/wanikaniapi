@@ -48,12 +48,12 @@ type VoiceActorData struct {
 }
 
 type VoiceActorGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type VoiceActorListParams struct {
 	*ListParams
-	IDs          []ID
+	IDs          []WKID
 	UpdatedAfter *WKTime
 }
 

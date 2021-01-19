@@ -50,12 +50,12 @@ type ResetData struct {
 }
 
 type ResetGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type ResetListParams struct {
 	*ListParams
-	IDs          []ID
+	IDs          []WKID
 	UpdatedAfter *WKTime
 }
 

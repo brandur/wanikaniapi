@@ -13,7 +13,7 @@ func TestVoiceActorList(t *testing.T) {
 	client := wktesting.LocalClient()
 
 	_, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
-		IDs: []wanikaniapi.ID{1, 2, 3},
+		IDs: []wanikaniapi.WKID{1, 2, 3},
 	})
 	assert.NoError(t, err)
 
@@ -27,7 +27,7 @@ func TestVoiceActorList(t *testing.T) {
 func TestVoiceActorGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.VoiceActorGet(&wanikaniapi.VoiceActorGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.VoiceActorGet(&wanikaniapi.VoiceActorGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]

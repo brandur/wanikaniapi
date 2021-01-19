@@ -90,7 +90,7 @@ func main() {
 	})
 
 	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
-		IDs:          []wanikaniapi.ID{1, 2, 3},
+		IDs:          []wanikaniapi.WKID{1, 2, 3},
 		UpdatedAfter: wanikaniapi.Time(time.Now()),
 	})
 	if err != nil {
@@ -104,7 +104,7 @@ func main() {
 The following helpers are available:
 
 * [`Bool`](https://pkg.go.dev/github.com/brandur/wanikaniapi#Bool)
-* [`IDPtr`](https://pkg.go.dev/github.com/brandur/wanikaniapi#IDPtr)
+* [`ID`](https://pkg.go.dev/github.com/brandur/wanikaniapi#ID)
 * [`Int`](https://pkg.go.dev/github.com/brandur/wanikaniapi#Int)
 * [`String`](https://pkg.go.dev/github.com/brandur/wanikaniapi#String)
 * [`Time`](https://pkg.go.dev/github.com/brandur/wanikaniapi#Time)
@@ -171,7 +171,7 @@ func main() {
 	})
 
 	var subjects []*wanikaniapi.Subject
-	err := client.PageFully(func(id *wanikaniapi.ID) (*wanikaniapi.PageObject, error) {
+	err := client.PageFully(func(id *wanikaniapi.WKID) (*wanikaniapi.PageObject, error) {
 		page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 			ListParams: &wanikaniapi.ListParams{
 				PageAfterID: id,

@@ -28,9 +28,9 @@ func Bool(b bool) *bool {
 	return &b
 }
 
-// IDPtr is a helper function that returns a pointer to the given value. This is
+// ID is a helper function that returns a pointer to the given value. This is
 // useful for setting values in parameter structs.
-func IDPtr(id ID) *ID {
+func ID(id WKID) *WKID {
 	return &id
 }
 
@@ -118,8 +118,8 @@ func NewClient(config *ClientConfig) *Client {
 	}
 }
 
-func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
-	var nextPageAfterID *ID
+func (c *Client) PageFully(onPage func(*WKID) (*PageObject, error)) error {
+	var nextPageAfterID *WKID
 
 	for {
 		page, err := onPage(nextPageAfterID)
@@ -132,7 +132,7 @@ func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
 		}
 
 		{
-			var nextPageAfterIDDisplay ID
+			var nextPageAfterIDDisplay WKID
 			if nextPageAfterID != nil {
 				nextPageAfterIDDisplay = *nextPageAfterID
 			}
@@ -164,7 +164,7 @@ func (c *Client) PageFully(onPage func(*ID) (*PageObject, error)) error {
 			return fmt.Errorf("couldn't parse `page_after_id` in next page query string")
 		}
 
-		pageAfterID := ID(pageAfterIDInt)
+		pageAfterID := WKID(pageAfterIDInt)
 		nextPageAfterID = &pageAfterID
 	}
 
@@ -250,11 +250,10 @@ type ClientConfig struct {
 	APIToken string
 	Logger   LeveledLoggerInterface
 }
-type ID int64
 
 type ListParams struct {
-	PageAfterID  *ID
-	PageBeforeID *ID
+	PageAfterID  *WKID
+	PageBeforeID *WKID
 }
 
 func (p *ListParams) encodeToURLValues() url.Values {
@@ -278,7 +277,7 @@ type ListParamsInterface interface {
 
 type Object struct {
 	DataUpdatedAt time.Time  `json:"data_updated_at"`
-	ID            ID         `json:"id"`
+	ID            WKID       `json:"id"`
 	ObjectType    ObjectType `json:"object"`
 	URL           string     `json:"url"`
 }
@@ -288,7 +287,7 @@ type ObjectType string
 type PageObject struct {
 	Object
 
-	TotalCount ID `json:"total_count"`
+	TotalCount int64 `json:"total_count"`
 
 	Pages struct {
 		NextURL     string `json:"next_url"`
@@ -304,6 +303,9 @@ type RecordedRequest struct {
 	Path   string
 	Query  string
 }
+
+// WKID represents a WaniKani API identifier.
+type WKID int64
 
 // WKTime is a type based on time.Time that lets us precisely control the JSON
 // marshaling for use in API parameters to endpoints.
@@ -330,7 +332,7 @@ func (t WKTime) MarshalJSON() ([]byte, error) {
 //
 //////////////////////////////////////////////////////////////////////////////
 
-func joinIDs(ids []ID, separator string) string {
+func joinIDs(ids []WKID, separator string) string {
 	var s string
 
 	for i, n := range ids {

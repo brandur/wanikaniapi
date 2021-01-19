@@ -50,11 +50,11 @@ type Review struct {
 }
 
 type ReviewCreateParams struct {
-	AssignmentID            *ID     `json:"assignment_id,omitempty"`
+	AssignmentID            *WKID   `json:"assignment_id,omitempty"`
 	CreatedAt               *WKTime `json:"created_at,omitempty"`
 	IncorrectMeaningAnswers *int    `json:"incorrect_meaning_answers,omitempty"`
 	IncorrectReadingAnswers *int    `json:"incorrect_reading_answers,omitempty"`
-	SubjectID               *ID     `json:"subject_id,omitempty"`
+	SubjectID               *WKID   `json:"subject_id,omitempty"`
 }
 
 type reviewCreateParamsWrapper struct {
@@ -62,25 +62,25 @@ type reviewCreateParamsWrapper struct {
 }
 
 type ReviewData struct {
-	AssignmentID             ID        `json:"assignment_id"`
+	AssignmentID             WKID      `json:"assignment_id"`
 	CreatedAt                time.Time `json:"created_at"`
 	EndingSRSStage           int       `json:"ending_srs_stage"`
 	IncorrectMeaningAnswers  int       `json:"incorrect_meaning_answers"`
 	IncorrectReadingAnswers  int       `json:"incorrect_reading_answers"`
-	SpacedRepetitionSystemID ID        `json:"spaced_repetition_system_id"`
+	SpacedRepetitionSystemID WKID      `json:"spaced_repetition_system_id"`
 	StartingSRSStage         int       `json:"starting_srs_stage"`
-	SubjectID                ID        `json:"subject_id"`
+	SubjectID                WKID      `json:"subject_id"`
 }
 
 type ReviewGetParams struct {
-	ID *ID
+	ID *WKID
 }
 
 type ReviewListParams struct {
 	*ListParams
-	AssignmentIDs []ID
-	IDs           []ID
-	SubjectIDs    []ID
+	AssignmentIDs []WKID
+	IDs           []WKID
+	SubjectIDs    []WKID
 	UpdatedAfter  *WKTime
 }
 

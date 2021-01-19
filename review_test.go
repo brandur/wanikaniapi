@@ -14,7 +14,7 @@ func TestReviewCreate(t *testing.T) {
 
 	_, err := client.ReviewCreate(&wanikaniapi.ReviewCreateParams{
 		IncorrectMeaningAnswers: wanikaniapi.Int(2),
-		SubjectID:               wanikaniapi.IDPtr(123),
+		SubjectID:               wanikaniapi.ID(123),
 	})
 	assert.NoError(t, err)
 
@@ -29,8 +29,8 @@ func TestReviewList(t *testing.T) {
 	client := wktesting.LocalClient()
 
 	_, err := client.ReviewList(&wanikaniapi.ReviewListParams{
-		AssignmentIDs: []wanikaniapi.ID{1, 2, 3},
-		SubjectIDs:    []wanikaniapi.ID{4, 5, 6},
+		AssignmentIDs: []wanikaniapi.WKID{1, 2, 3},
+		SubjectIDs:    []wanikaniapi.WKID{4, 5, 6},
 	})
 	assert.NoError(t, err)
 
@@ -44,7 +44,7 @@ func TestReviewList(t *testing.T) {
 func TestReviewGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.ReviewGet(&wanikaniapi.ReviewGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.ReviewGet(&wanikaniapi.ReviewGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]

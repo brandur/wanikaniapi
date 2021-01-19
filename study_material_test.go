@@ -14,7 +14,7 @@ func TestStudyMaterialCreate(t *testing.T) {
 
 	_, err := client.StudyMaterialCreate(&wanikaniapi.StudyMaterialCreateParams{
 		MeaningNote: wanikaniapi.String("hard"),
-		SubjectID:   wanikaniapi.IDPtr(123),
+		SubjectID:   wanikaniapi.ID(123),
 	})
 	assert.NoError(t, err)
 
@@ -30,7 +30,7 @@ func TestStudyMaterialList(t *testing.T) {
 
 	_, err := client.StudyMaterialList(&wanikaniapi.StudyMaterialListParams{
 		Hidden: wanikaniapi.Bool(true),
-		IDs:    []wanikaniapi.ID{1, 2, 3},
+		IDs:    []wanikaniapi.WKID{1, 2, 3},
 	})
 	assert.NoError(t, err)
 
@@ -44,7 +44,7 @@ func TestStudyMaterialList(t *testing.T) {
 func TestStudyMaterialGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.StudyMaterialGet(&wanikaniapi.StudyMaterialGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.StudyMaterialGet(&wanikaniapi.StudyMaterialGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
@@ -58,7 +58,7 @@ func TestStudyMaterialUpdate(t *testing.T) {
 	client := wktesting.LocalClient()
 
 	_, err := client.StudyMaterialUpdate(&wanikaniapi.StudyMaterialUpdateParams{
-		ID:          wanikaniapi.IDPtr(123),
+		ID:          wanikaniapi.ID(123),
 		MeaningNote: wanikaniapi.String("easy now"),
 	})
 	assert.NoError(t, err)

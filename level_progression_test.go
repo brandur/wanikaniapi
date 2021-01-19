@@ -13,7 +13,7 @@ func TestLevelProgressionList(t *testing.T) {
 	client := wktesting.LocalClient()
 
 	_, err := client.LevelProgressionList(&wanikaniapi.LevelProgressionListParams{
-		IDs: []wanikaniapi.ID{1, 2, 3},
+		IDs: []wanikaniapi.WKID{1, 2, 3},
 	})
 	assert.NoError(t, err)
 
@@ -27,7 +27,7 @@ func TestLevelProgressionList(t *testing.T) {
 func TestLevelProgressionGet(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	_, err := client.LevelProgressionGet(&wanikaniapi.LevelProgressionGetParams{ID: wanikaniapi.IDPtr(123)})
+	_, err := client.LevelProgressionGet(&wanikaniapi.LevelProgressionGetParams{ID: wanikaniapi.ID(123)})
 	assert.NoError(t, err)
 
 	req := client.RecordedRequests[0]
