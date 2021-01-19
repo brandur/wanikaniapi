@@ -12,6 +12,8 @@ Contents:
 
 * [Client initialization](#client-initialization)
 * [Making API requests](#making-api-requests)
+* [Setting API parameters](#setting-api-parameters)
+* [Nil versus non-nil on API response structs](#nil-versus-non-nil-on-api-response-structs)
 * [Pagination](#pagination)
 * [Logging](#logging)
 * [Handling errors](#handling-errors)
