@@ -2,6 +2,7 @@ package wanikaniapi
 
 import (
 	"bytes"
+	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,6 +11,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strconv"
 	"time"
 )
@@ -258,10 +260,6 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 	return err
 }
 
-func (c *Client) retryableErr(err error) bool {
-	return true
-}
-
 func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, respData interface{}) error {
 	var reqReader io.Reader
 	if reqBytes != nil {
@@ -331,6 +329,46 @@ func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, re
 	}
 
 	return nil
+}
+
+// Regular expressions used to match a few error types that we know we don't
+// want to retry. Unfortunately these errors aren't typed so we match on the
+// error's message.
+var (
+	redirectsErrorRE = regexp.MustCompile(`stopped after \d+ redirects\z`)
+	schemeErrorRE    = regexp.MustCompile(`unsupported protocol scheme`)
+)
+
+func (c *Client) retryableErr(err error) bool {
+	if apiErr, ok := err.(*APIError); ok {
+		switch apiErr.StatusCode {
+		case http.StatusTooManyRequests:
+			return true
+		case http.StatusInternalServerError:
+			return true
+		case http.StatusServiceUnavailable:
+			return true
+		}
+	}
+
+	if urlErr, ok := err.(*url.Error); ok {
+		// Don't retry too many redirects.
+		if redirectsErrorRE.MatchString(urlErr.Error()) {
+			return false
+		}
+
+		// Don't retry invalid protocol scheme.
+		if schemeErrorRE.MatchString(urlErr.Error()) {
+			return false
+		}
+
+		// Don't retry TLS certificate validation problems.
+		if _, ok := urlErr.Err.(x509.UnknownAuthorityError); ok {
+			return false
+		}
+	}
+
+	return true
 }
 
 // ClientConfig specifies configuration with which to initialize a WaniKani API

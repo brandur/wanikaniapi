@@ -267,7 +267,23 @@ TODO
 
 ### Automatic retries
 
-TODO
+The client can be configured to automatically retry errors that are known to be safe to retry:
+
+``` go
+package main
+
+import (
+	"github.com/brandur/wanikaniapi"
+)
+
+func main() {
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+        MaxRetries: 2,
+	})
+
+	...
+}
+```
 
 ## Development
 
