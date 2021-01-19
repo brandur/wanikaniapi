@@ -428,12 +428,6 @@ func (p *ListParams) encodeToURLValues() url.Values {
 	return values
 }
 
-// ListParamsInterface is a list params interface that enables encoding to a
-// URL query.
-type ListParamsInterface interface {
-	EncodeToQuery() string
-}
-
 // Object contains the common fields of every resource in the WaniKani API.
 type Object struct {
 	DataUpdatedAt time.Time `json:"data_updated_at"`
