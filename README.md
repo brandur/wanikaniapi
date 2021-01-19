@@ -263,7 +263,71 @@ API calls may still return non-`APIError` errors for non-API problems (e.g. netw
 
 ### Conditional requests
 
-TODO
+Conditional requests reduce load on the server by asking for a response only when data has changed. There are two separate mechanisms for this: `If-Modified-Since` and `If-None-Match`.
+
+`If-Modified-Since` works by feeding a value of the `Last-Modified` header into future requests:
+
+``` go
+package main
+
+import (
+    "github.com/brandur/wanikaniapi"
+)
+
+func main() {
+    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+    })
+
+	subjects1, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+	if err != nil {
+		panic(err)
+	}
+
+	subjects2, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+		Params: wanikaniapi.Params{
+			IfModifiedSince: wanikaniapi.Time(subjects1.LastModified),
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+    ...
+}
+```
+
+`If-None-Match` works by feeding a value of the `Etag` header into future requests:
+
+``` go
+package main
+
+import (
+    "github.com/brandur/wanikaniapi"
+)
+
+func main() {
+    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+    })
+
+	subjects1, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+	if err != nil {
+		panic(err)
+	}
+
+	subjects2, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+		Params: wanikaniapi.Params{
+			IfNoneMatch: wanikaniapi.String(subjects1.ETag),
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+    ...
+}
+```
 
 ### Automatic retries
 
@@ -300,4 +364,12 @@ Tests generally compare recorded requests so that they don't have to make live A
 ``` sh
 export WANI_KANI_API_TOKEN=
 go test .
+```
+
+### Gofmt
+
+All code expects to be formatted. Check the current state with:
+
+``` sh
+scripts/check_gofmt.sh
 ```

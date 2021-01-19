@@ -298,6 +298,8 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 		req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	}
 
+	obj := respObj.GetObject()
+
 	var respBytes []byte
 	var statusCode int
 	if c.RecordMode {
@@ -327,6 +329,15 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 		}
 		defer resp.Body.Close()
 
+		obj.ETag = resp.Header.Get("ETag")
+		obj.LastModified, err = time.Parse(
+			"Mon, 02 Jan 2006 15:04:05 MST",
+			resp.Header.Get("Last-Modified"),
+		)
+		if err != nil {
+			return fmt.Errorf("error parsing Last-Modified: %w", err)
+		}
+
 		statusCode = resp.StatusCode
 		respBytes, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
@@ -335,7 +346,6 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 	}
 
 	if statusCode == http.StatusNotModified {
-		obj := respObj.GetObject()
 		obj.NotModified = true
 		return nil
 	}
@@ -344,7 +354,7 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 		var apiErr APIError
 		err := json.Unmarshal(respBytes, &apiErr)
 		if err != nil {
-			return fmt.Errorf("error unmarshaling error response: %v", err)
+			return fmt.Errorf("error unmarshaling error response: %w", err)
 		}
 
 		return &apiErr
@@ -352,7 +362,7 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 
 	err = json.Unmarshal(respBytes, respObj)
 	if err != nil {
-		return fmt.Errorf("error unmarshaling response: %v", err)
+		return fmt.Errorf("error unmarshaling response: %w", err)
 	}
 
 	return nil
@@ -438,6 +448,14 @@ func (p *ListParams) encodeToURLValues() url.Values {
 type Object struct {
 	DataUpdatedAt time.Time `json:"data_updated_at"`
 	ID            WKID      `json:"id"`
+
+	// ETag is an opaque token that can be used to make conditional requests by
+	// passing its value to Params.IfNoneMatch for a future request.
+	ETag string `json:"-"`
+
+	// LastModified is a date that can be used to make conditional requests by
+	// passing its value to Params.IfModifiedSince for a future request.
+	LastModified time.Time `json:"-"`
 
 	// NotModified is set to true if the response indicated not modified when a
 	// `If-None-Match` or `If-Modified-Since` header was passed in.
