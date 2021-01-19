@@ -309,10 +309,15 @@ type RecordedRequest struct {
 // marshaling for use in API parameters to endpoints.
 type WKTime time.Time
 
+// Encode encodes the time to the RFC3339 format that WaniKani expects.
+func (t WKTime) Encode() string {
+	return time.Time(t).Format(time.RFC3339)
+}
+
 // MarshalJSON overrides JSON marshaling for WKTime so that it can be put in
 // the RFC3339 format that WaniKani expects.
 func (t WKTime) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + time.Time(t).Format(time.RFC3339) + `"`), nil
+	return []byte(`"` + t.Encode() + `"`), nil
 }
 
 //////////////////////////////////////////////////////////////////////////////

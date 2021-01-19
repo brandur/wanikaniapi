@@ -204,7 +204,7 @@ type SubjectListParams struct {
 	Levels       []int
 	Slugs        []string
 	Types        []string
-	UpdatedAfter *time.Time
+	UpdatedAfter *WKTime
 }
 
 func (p *SubjectListParams) EncodeToQuery() string {
@@ -231,7 +231,7 @@ func (p *SubjectListParams) EncodeToQuery() string {
 	}
 
 	if p.UpdatedAfter != nil {
-		values.Add("updated_after", p.UpdatedAfter.Format(time.RFC3339))
+		values.Add("updated_after", p.UpdatedAfter.Encode())
 	}
 
 	return values.Encode()

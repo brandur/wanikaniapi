@@ -68,8 +68,8 @@ type AssignmentGetParams struct {
 
 type AssignmentListParams struct {
 	*ListParams
-	AvailableAfter                 *time.Time
-	AvailableBefore                *time.Time
+	AvailableAfter                 *WKTime
+	AvailableBefore                *WKTime
 	Burned                         *bool
 	Hidden                         *bool
 	IDs                            []ID
@@ -81,18 +81,18 @@ type AssignmentListParams struct {
 	Started                        *bool
 	SubjectIDs                     []ID
 	Unlocked                       *bool
-	UpdatedAfter                   *time.Time
+	UpdatedAfter                   *WKTime
 }
 
 func (p *AssignmentListParams) EncodeToQuery() string {
 	values := p.encodeToURLValues()
 
 	if p.AvailableAfter != nil {
-		values.Add("available_after", p.AvailableAfter.Format(time.RFC3339))
+		values.Add("available_after", p.AvailableAfter.Encode())
 	}
 
 	if p.AvailableBefore != nil {
-		values.Add("available_before", p.AvailableBefore.Format(time.RFC3339))
+		values.Add("available_before", p.AvailableBefore.Encode())
 	}
 
 	if p.Burned != nil {
@@ -142,7 +142,7 @@ func (p *AssignmentListParams) EncodeToQuery() string {
 	}
 
 	if p.UpdatedAfter != nil {
-		values.Add("updated_after", p.UpdatedAfter.Format(time.RFC3339))
+		values.Add("updated_after", p.UpdatedAfter.Encode())
 	}
 
 	return values.Encode()

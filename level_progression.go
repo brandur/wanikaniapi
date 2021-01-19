@@ -59,7 +59,7 @@ type LevelProgressionGetParams struct {
 type LevelProgressionListParams struct {
 	*ListParams
 	IDs          []ID
-	UpdatedAfter *time.Time
+	UpdatedAfter *WKTime
 }
 
 func (p *LevelProgressionListParams) EncodeToQuery() string {
@@ -70,7 +70,7 @@ func (p *LevelProgressionListParams) EncodeToQuery() string {
 	}
 
 	if p.UpdatedAfter != nil {
-		values.Add("updated_after", p.UpdatedAfter.Format(time.RFC3339))
+		values.Add("updated_after", p.UpdatedAfter.Encode())
 	}
 
 	return values.Encode()

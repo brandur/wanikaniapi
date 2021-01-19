@@ -81,7 +81,7 @@ type ReviewListParams struct {
 	AssignmentIDs []ID
 	IDs           []ID
 	SubjectIDs    []ID
-	UpdatedAfter  *time.Time
+	UpdatedAfter  *WKTime
 }
 
 func (p *ReviewListParams) EncodeToQuery() string {
@@ -100,7 +100,7 @@ func (p *ReviewListParams) EncodeToQuery() string {
 	}
 
 	if p.UpdatedAfter != nil {
-		values.Add("updated_after", p.UpdatedAfter.Format(time.RFC3339))
+		values.Add("updated_after", p.UpdatedAfter.Encode())
 	}
 
 	return values.Encode()

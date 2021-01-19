@@ -70,7 +70,7 @@ type ReviewStatisticListParams struct {
 	PercentagesLesserThan  *int
 	SubjectIDs             []ID
 	SubjectTypes           []ObjectType
-	UpdatedAfter           *time.Time
+	UpdatedAfter           *WKTime
 }
 
 func (p *ReviewStatisticListParams) EncodeToQuery() string {
@@ -101,7 +101,7 @@ func (p *ReviewStatisticListParams) EncodeToQuery() string {
 	}
 
 	if p.UpdatedAfter != nil {
-		values.Add("updated_after", p.UpdatedAfter.Format(time.RFC3339))
+		values.Add("updated_after", p.UpdatedAfter.Encode())
 	}
 
 	return values.Encode()

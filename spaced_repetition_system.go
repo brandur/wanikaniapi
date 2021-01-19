@@ -66,7 +66,7 @@ type SpacedRepetitionSystemGetParams struct {
 type SpacedRepetitionSystemListParams struct {
 	*ListParams
 	IDs          []ID
-	UpdatedAfter *time.Time
+	UpdatedAfter *WKTime
 }
 
 func (p *SpacedRepetitionSystemListParams) EncodeToQuery() string {
@@ -76,7 +76,7 @@ func (p *SpacedRepetitionSystemListParams) EncodeToQuery() string {
 		values.Add("ids", joinIDs(p.IDs, ","))
 	}
 	if p.UpdatedAfter != nil {
-		values.Add("updated_after", p.UpdatedAfter.Format(time.RFC3339))
+		values.Add("updated_after", p.UpdatedAfter.Encode())
 	}
 
 	return values.Encode()

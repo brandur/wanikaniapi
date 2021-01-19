@@ -2,7 +2,6 @@ package wanikaniapi
 
 import (
 	"strconv"
-	"time"
 )
 
 //////////////////////////////////////////////////////////////////////////////
@@ -55,7 +54,7 @@ type VoiceActorGetParams struct {
 type VoiceActorListParams struct {
 	*ListParams
 	IDs          []ID
-	UpdatedAfter *time.Time
+	UpdatedAfter *WKTime
 }
 
 func (p *VoiceActorListParams) EncodeToQuery() string {
@@ -66,7 +65,7 @@ func (p *VoiceActorListParams) EncodeToQuery() string {
 	}
 
 	if p.UpdatedAfter != nil {
-		values.Add("updated_after", p.UpdatedAfter.Format(time.RFC3339))
+		values.Add("updated_after", p.UpdatedAfter.Encode())
 	}
 
 	return values.Encode()
