@@ -29,6 +29,47 @@ func TestClientError(t *testing.T) {
 	}, err)
 }
 
+func TestClientRetry(t *testing.T) {
+	client := wktesting.LocalClient()
+	client.MaxRetries = 2
+	client.NoRetrySleep = true
+
+	client.RecordedResponses = []*wanikaniapi.RecordedResponse{
+		{StatusCode: http.StatusTooManyRequests, Body: []byte(`{
+			"code": 429,
+			"error": "You are rate limited"
+		}`)},
+		{StatusCode: http.StatusTooManyRequests, Body: []byte(`{
+			"code": 429,
+			"error": "You are rate limited"
+		}`)},
+		{StatusCode: http.StatusOK, Body: []byte(`{}`)},
+	}
+
+	subjects, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+
+	assert.NoError(t, err)
+	assert.Equal(t, 0, len(subjects.Data))
+}
+
+func TestClientNoRetry(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	client.RecordedResponses = []*wanikaniapi.RecordedResponse{
+		{StatusCode: http.StatusTooManyRequests, Body: []byte(`{
+			"code": 429,
+			"error": "You are rate limited"
+		}`)},
+	}
+
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+
+	assert.Equal(t, &wanikaniapi.APIError{
+		StatusCode: http.StatusTooManyRequests,
+		Message:    "You are rate limited",
+	}, err)
+}
+
 func TestPageFullyLocal(t *testing.T) {
 	client := wktesting.LocalClient()
 

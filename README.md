@@ -259,6 +259,8 @@ func main() {
 }
 ```
 
+API calls may still return non-`APIError` errors for non-API problems (e.g. network error, TLS error, unmarshaling error, etc.).
+
 ### Conditional requests
 
 TODO

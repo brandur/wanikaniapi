@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"math"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -114,6 +116,14 @@ type Client struct {
 	APIToken string
 	Logger   LeveledLoggerInterface
 
+	// MaxRetries is the maximum number of retries for network errors and other
+	// types of error.
+	MaxRetries int
+
+	// NoRetrySleep forces the client to not sleep on retries. This is for
+	// testing only. Don't use.
+	NoRetrySleep bool
+
 	// RecordMode stubs out any actual HTTP calls, and instead starts storing
 	// request data to RecordedRequests.
 	RecordMode bool
@@ -217,7 +227,39 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 		}
 	}
 
-	return c.requestOne(method, path, query, url, reqBytes, respData)
+	var err error
+	var numRetries int
+	for {
+		err = c.requestOne(method, path, query, url, reqBytes, respData)
+		fmt.Printf("retry error = %+v\n", err)
+		if !c.retryableErr(err) {
+			break
+		}
+
+		numRetries++
+		if numRetries > c.MaxRetries {
+			break
+		}
+
+		baseSleepSeconds := int(math.Pow(2, float64(numRetries)))
+
+		// Nanoseconds
+		sleepDuration := time.Duration(baseSleepSeconds) * time.Second
+
+		// Apply jitter by randomizing in the range of 75 to 100%
+		jitter := rand.Int63n(int64(sleepDuration / 4))
+		sleepDuration -= time.Duration(jitter)
+
+		if !c.NoRetrySleep {
+			time.Sleep(sleepDuration)
+		}
+	}
+
+	return err
+}
+
+func (c *Client) retryableErr(err error) bool {
+	return true
 }
 
 func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, respData interface{}) error {
@@ -291,9 +333,18 @@ func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, re
 	return nil
 }
 
+// ClientConfig specifies configuration with which to initialize a WaniKani API
+// client.
 type ClientConfig struct {
+	// APIToken is the WaniKani API token to use for authentication.
 	APIToken string
-	Logger   LeveledLoggerInterface
+
+	// Logger is the logger to send messages to.
+	Logger LeveledLoggerInterface
+
+	// MaxRetries is the maximum number of retries for network errors and other
+	// types of error. Defaults to zero.
+	MaxRetries int
 }
 
 type ListParams struct {
