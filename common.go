@@ -209,13 +209,20 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 	c.Logger.Debugf("Requesting URL: %v (revision: %v)", url, WaniKaniRevision)
 
 	var reqBytes []byte
-	var reqReader io.Reader
 	if reqData != nil {
 		var err error
 		reqBytes, err = json.Marshal(reqData)
 		if err != nil {
 			return err
 		}
+	}
+
+	return c.requestOne(method, path, query, url, reqBytes, respData)
+}
+
+func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, respData interface{}) error {
+	var reqReader io.Reader
+	if reqBytes != nil {
 		reqReader = bytes.NewReader(reqBytes)
 	}
 
