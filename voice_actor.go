@@ -48,6 +48,7 @@ type VoiceActorData struct {
 }
 
 type VoiceActorGetParams struct {
+	*Params
 	ID *WKID
 }
 
