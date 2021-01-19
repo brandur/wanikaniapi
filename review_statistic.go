@@ -59,12 +59,14 @@ type ReviewStatisticData struct {
 }
 
 type ReviewStatisticGetParams struct {
-	*Params
+	Params
 	ID *WKID
 }
 
 type ReviewStatisticListParams struct {
-	*ListParams
+	ListParams
+	Params
+
 	Hidden                 *bool
 	IDs                    []WKID
 	PercentagesGreaterThan *int

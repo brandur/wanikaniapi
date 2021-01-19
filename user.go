@@ -54,7 +54,7 @@ type UserData struct {
 }
 
 type UserGetParams struct {
-	*Params
+	Params
 }
 
 type UserPreferences struct {
@@ -74,7 +74,7 @@ type UserSubscription struct {
 }
 
 type UserUpdateParams struct {
-	*Params
+	Params
 	Preferences *UserUpdatePreferencesParams `json:"preferences,omitempty"`
 }
 
@@ -88,6 +88,6 @@ type UserUpdatePreferencesParams struct {
 }
 
 type userUpdateParamsWrapper struct {
-	*Params
+	Params
 	User *UserUpdateParams `json:"user"`
 }

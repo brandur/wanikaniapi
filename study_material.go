@@ -67,7 +67,7 @@ type StudyMaterialData struct {
 }
 
 type StudyMaterialCreateParams struct {
-	*Params
+	Params
 	MeaningNote     *string  `json:"meaning_note,omitempty"`
 	MeaningSynonyms []string `json:"meaning_synonyms,omitempty"`
 	ReadingNote     *string  `json:"reading_note,omitempty"`
@@ -75,17 +75,19 @@ type StudyMaterialCreateParams struct {
 }
 
 type studyMaterialCreateParamsWrapper struct {
-	*Params
+	Params
 	StudyMaterial *StudyMaterialCreateParams `json:"study_material"`
 }
 
 type StudyMaterialGetParams struct {
-	*Params
+	Params
 	ID *WKID
 }
 
 type StudyMaterialListParams struct {
-	*ListParams
+	ListParams
+	Params
+
 	Hidden       *bool
 	IDs          []WKID
 	SubjectIDs   []WKID
@@ -125,7 +127,7 @@ type StudyMaterialPage struct {
 }
 
 type StudyMaterialUpdateParams struct {
-	*Params
+	Params
 	ID              *WKID    `json:"-"`
 	MeaningNote     *string  `json:"meaning_note,omitempty"`
 	MeaningSynonyms []string `json:"meaning_synonyms,omitempty"`
@@ -133,6 +135,6 @@ type StudyMaterialUpdateParams struct {
 }
 
 type studyMaterialUpdateParamsWrapper struct {
-	*Params
+	Params
 	StudyMaterial *StudyMaterialUpdateParams `json:"study_material"`
 }

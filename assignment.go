@@ -63,12 +63,14 @@ type AssignmentData struct {
 }
 
 type AssignmentGetParams struct {
-	*Params
+	Params
 	ID *WKID
 }
 
 type AssignmentListParams struct {
-	*ListParams
+	ListParams
+	Params
+
 	AvailableAfter                 *WKTime
 	AvailableBefore                *WKTime
 	Burned                         *bool
@@ -155,7 +157,7 @@ type AssignmentPage struct {
 }
 
 type AssignmentStartParams struct {
-	*Params
+	Params
 	ID        *WKID   `json:"-"`
 	StartedAt *WKTime `json:"started_at"`
 }

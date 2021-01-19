@@ -236,10 +236,12 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 		}
 	}
 
+	fmt.Printf("params = %+v\n", params)
+
 	var err error
 	var numRetries int
 	for {
-		err = c.requestOne(method, path, query, url, reqBytes, respData)
+		err = c.requestOne(method, path, query, url, params.GetParams(), reqBytes, respData)
 		fmt.Printf("retry error = %+v\n", err)
 		if !c.retryableErr(err) {
 			break
@@ -267,7 +269,7 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 	return err
 }
 
-func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, respData interface{}) error {
+func (c *Client) requestOne(method, path, query, url string, params *Params, reqBytes []byte, respData interface{}) error {
 	var reqReader io.Reader
 	if reqBytes != nil {
 		reqReader = bytes.NewReader(reqBytes)
@@ -281,7 +283,15 @@ func (c *Client) requestOne(method, path, query, url string, reqBytes []byte, re
 	req.Header.Set("Authorization", "Bearer "+c.APIToken)
 	req.Header.Set("Wanikani-Revision", WaniKaniRevision)
 
-	// if 
+	if params.IfModifiedSince != nil {
+		req.Header.Set(
+			"If-Modified-Since",
+			params.IfModifiedSince.UTC().Format("Mon, 02 Jan 2006 15:04:05")+" GMT",
+		)
+	}
+	if params.IfNoneMatch != nil {
+		req.Header.Set("If-None-Match", *params.IfNoneMatch)
+	}
 
 	// Body content type for mutating requests
 	if reqReader != nil {
@@ -399,7 +409,6 @@ type ClientConfig struct {
 // ListParams contains the common parameters for every list endpoint in the
 // WaniKani API.
 type ListParams struct {
-	Params
 	PageAfterID  *WKID
 	PageBeforeID *WKID
 }
@@ -456,11 +465,11 @@ type PageObject struct {
 type Params struct {
 	// IfModifiedSince sets a value for the `If-Modified-Since` header so that
 	// a response is conditional on an update since the last given time.
-	IfModifiedSince *time.Time
+	IfModifiedSince *time.Time `json:"-"`
 
 	// IfNoneMatch sets a value for the `If-None-Match` header so that a
 	// response is conditional on an update since the last given Etag.
-	IfNoneMatch *string
+	IfNoneMatch *string `json:"-"`
 }
 
 // EncodeToQuery encodes the parameters to be included in a query string.
@@ -471,6 +480,9 @@ func (p *Params) EncodeToQuery() string {
 
 // GetParams returns the underlying Params object.
 func (p *Params) GetParams() *Params {
+	if p == nil {
+		return nil
+	}
 	return p
 }
 

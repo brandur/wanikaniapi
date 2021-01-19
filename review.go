@@ -50,7 +50,7 @@ type Review struct {
 }
 
 type ReviewCreateParams struct {
-	*Params
+	Params
 	AssignmentID            *WKID   `json:"assignment_id,omitempty"`
 	CreatedAt               *WKTime `json:"created_at,omitempty"`
 	IncorrectMeaningAnswers *int    `json:"incorrect_meaning_answers,omitempty"`
@@ -59,7 +59,7 @@ type ReviewCreateParams struct {
 }
 
 type reviewCreateParamsWrapper struct {
-	*Params
+	Params
 	Review *ReviewCreateParams `json:"review"`
 }
 
@@ -75,12 +75,14 @@ type ReviewData struct {
 }
 
 type ReviewGetParams struct {
-	*Params
+	Params
 	ID *WKID
 }
 
 type ReviewListParams struct {
-	*ListParams
+	ListParams
+	Params
+
 	AssignmentIDs []WKID
 	IDs           []WKID
 	SubjectIDs    []WKID

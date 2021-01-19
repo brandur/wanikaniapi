@@ -115,7 +115,7 @@ func TestPageFullyLocal(t *testing.T) {
 	var subjects []*wanikaniapi.Subject
 	err := client.PageFully(func(id *wanikaniapi.WKID) (*wanikaniapi.PageObject, error) {
 		page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
-			ListParams: &wanikaniapi.ListParams{
+			ListParams: wanikaniapi.ListParams{
 				PageAfterID: id,
 			},
 		})
@@ -166,7 +166,7 @@ func TestPageFullyLive(t *testing.T) {
 		}
 
 		page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
-			ListParams: &wanikaniapi.ListParams{
+			ListParams: wanikaniapi.ListParams{
 				PageAfterID: id,
 			},
 		})

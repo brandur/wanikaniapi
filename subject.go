@@ -194,12 +194,14 @@ type SubjectVocabularyReading struct {
 }
 
 type SubjectGetParams struct {
-	*Params
+	Params
 	ID *WKID
 }
 
 type SubjectListParams struct {
-	*ListParams
+	ListParams
+	Params
+
 	IDs          []WKID
 	Hidden       *bool
 	Levels       []int
