@@ -69,6 +69,62 @@ func main() {
 
 Function naming follows the pattern of `<API resource><Action>` like `AssignmentList`. Most resources support `*Get` and `*List`, and some support mutating operations like `*Create` or `*Start`.
 
+### Setting API parameters
+
+Go makes no distinction between a value that was left unset versus one set to an empty value (e.g. `""` for a string), so API parameters use pointers so it can be determined which values were meant to be sent and which ones weren't.
+
+The package provides a set of helper functions to make setting pointers easy:
+
+``` go
+package main
+
+import (
+	"os"
+
+	"github.com/brandur/wanikaniapi"
+)
+
+func main() {
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
+
+	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
+		IDs:          []wanikaniapi.ID{1, 2, 3},
+		UpdatedAfter: wanikaniapi.Time(time.Now()),
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	...
+}
+```
+
+The following helpers are available:
+
+* [`Bool`](https://pkg.go.dev/github.com/brandur/wanikaniapi#Bool)
+* [`IDPtr`](https://pkg.go.dev/github.com/brandur/wanikaniapi#IDPtr)
+* [`Int`](https://pkg.go.dev/github.com/brandur/wanikaniapi#Int)
+* [`String`](https://pkg.go.dev/github.com/brandur/wanikaniapi#String)
+* [`Time`](https://pkg.go.dev/github.com/brandur/wanikaniapi#Time)
+
+No helpers are needed for setting slices like `IDs` because slices are `nil` by default.
+
+### Nil versus non-nil on API response structs
+
+Values in API responses may be a pointer or non-pointer based on whether they're defined as nullable or not nullable by the WaniKani API:
+
+``` go
+type LevelProgressionData struct {
+	AbandonedAt *time.Time `json:"abandoned_at"`
+	CreatedAt   time.Time  `json:"created_at"`
+
+    ...
+```
+
+`CreatedAt` always has a value and is therefore `time.Time`. `AbandonedAt` may be set or unset, and is therefore `*time.Time` instead.
+
 ### Pagination
 
 List endpoints return list objects which contain only a single page worth of data, although they do have a pointer to where the next page's worth can be fetched:

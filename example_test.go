@@ -3,6 +3,7 @@ package wanikaniapi_test
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/brandur/wanikaniapi"
 )
@@ -24,6 +25,22 @@ func ExampleClient_makingAPIRequests() {
 	})
 
 	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("all voice actors: %+v\n", voiceActors)
+}
+
+func ExampleClient_settingAPIParameters() {
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
+
+	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
+		IDs:          []wanikaniapi.ID{1, 2, 3},
+		UpdatedAfter: wanikaniapi.Time(time.Now()),
+	})
 	if err != nil {
 		panic(err)
 	}
