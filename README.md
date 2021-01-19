@@ -238,6 +238,9 @@ API errors are returned as the special error struct [`*APIError`](https://pkg.go
 package main
 
 import (
+    "fmt"
+    "os"
+
     "github.com/brandur/wanikaniapi"
 )
 
@@ -271,6 +274,7 @@ package main
 
 import (
     "context"
+    "os"
 
     "github.com/brandur/wanikaniapi"
 )
@@ -303,6 +307,8 @@ Conditional requests reduce load on the server by asking for a response only whe
 package main
 
 import (
+    "os"
+
     "github.com/brandur/wanikaniapi"
 )
 
@@ -335,6 +341,8 @@ func main() {
 package main
 
 import (
+    "os"
+
     "github.com/brandur/wanikaniapi"
 )
 
@@ -369,6 +377,8 @@ The client can be configured to automatically retry errors that are known to be 
 package main
 
 import (
+    "os"
+
     "github.com/brandur/wanikaniapi"
 )
 
