@@ -86,7 +86,10 @@ const (
 	ObjectTypeVoiceActor             = WKObjectType("voice_actor")
 )
 
+// WaniKaniAPIURL is the base URL of the WaniKani API.
 const WaniKaniAPIURL = "https://api.wanikani.com"
+
+// WaniKaniRevision is the revision of the WaniKani API.
 const WaniKaniRevision = "20170710"
 
 // APIError represents an HTTP status API error that came back from WaniKani's
@@ -114,6 +117,7 @@ func (e APIError) Error() string {
 	return e.Message
 }
 
+// Client is a WaniKani API client.
 type Client struct {
 	APIToken string
 	Logger   LeveledLoggerInterface
@@ -137,6 +141,7 @@ type Client struct {
 	httpClient *http.Client
 }
 
+// NewClient returns a new WaniKani API client.
 func NewClient(config *ClientConfig) *Client {
 	var logger LeveledLoggerInterface
 
@@ -155,6 +160,7 @@ func NewClient(config *ClientConfig) *Client {
 	}
 }
 
+// PageFully is a helper for fully paginating a resource in the WaniKani API.
 func (c *Client) PageFully(onPage func(*WKID) (*PageObject, error)) error {
 	var nextPageAfterID *WKID
 
@@ -385,6 +391,8 @@ type ClientConfig struct {
 	MaxRetries int
 }
 
+// ListParams contains the common parameters for every list endpoint in the
+// WaniKani API.
 type ListParams struct {
 	PageAfterID  *WKID
 	PageBeforeID *WKID
@@ -405,10 +413,13 @@ func (p *ListParams) encodeToURLValues() url.Values {
 	return values
 }
 
+// ListParamsInterface is a list params interface that enables encoding to a
+// URL query.
 type ListParamsInterface interface {
 	EncodeToQuery() string
 }
 
+// Object contains the common fields of every resource in the WaniKani API.
 type Object struct {
 	DataUpdatedAt time.Time    `json:"data_updated_at"`
 	ID            WKID         `json:"id"`
@@ -416,6 +427,8 @@ type Object struct {
 	URL           string       `json:"url"`
 }
 
+// PageObject contains the common fields of every list resource in the WaniKani
+// API.
 type PageObject struct {
 	Object
 
