@@ -243,7 +243,7 @@ import (
 
 func main() {
     client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
     })
 
     _, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
@@ -277,7 +277,7 @@ import (
 
 func main() {
     client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
     })
 
 	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{
@@ -308,7 +308,7 @@ import (
 
 func main() {
     client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
     })
 
 	subjects1, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
@@ -340,7 +340,7 @@ import (
 
 func main() {
     client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
     })
 
 	subjects1, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
@@ -374,6 +374,7 @@ import (
 
 func main() {
     client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+        APIToken:   os.Getenv("WANI_KANI_API_TOKEN"),
         MaxRetries: 2,
     })
 
