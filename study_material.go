@@ -67,6 +67,7 @@ type StudyMaterialData struct {
 }
 
 type StudyMaterialCreateParams struct {
+	*Params
 	MeaningNote     *string  `json:"meaning_note,omitempty"`
 	MeaningSynonyms []string `json:"meaning_synonyms,omitempty"`
 	ReadingNote     *string  `json:"reading_note,omitempty"`
@@ -78,6 +79,7 @@ type studyMaterialCreateParamsWrapper struct {
 }
 
 type StudyMaterialGetParams struct {
+	*Params
 	ID *WKID
 }
 
@@ -122,6 +124,7 @@ type StudyMaterialPage struct {
 }
 
 type StudyMaterialUpdateParams struct {
+	*Params
 	ID              *WKID    `json:"-"`
 	MeaningNote     *string  `json:"meaning_note,omitempty"`
 	MeaningSynonyms []string `json:"meaning_synonyms,omitempty"`

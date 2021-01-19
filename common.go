@@ -394,6 +394,7 @@ type ClientConfig struct {
 // ListParams contains the common parameters for every list endpoint in the
 // WaniKani API.
 type ListParams struct {
+	Params
 	PageAfterID  *WKID
 	PageBeforeID *WKID
 }
@@ -421,10 +422,15 @@ type ListParamsInterface interface {
 
 // Object contains the common fields of every resource in the WaniKani API.
 type Object struct {
-	DataUpdatedAt time.Time    `json:"data_updated_at"`
-	ID            WKID         `json:"id"`
-	ObjectType    WKObjectType `json:"object"`
-	URL           string       `json:"url"`
+	DataUpdatedAt time.Time `json:"data_updated_at"`
+	ID            WKID      `json:"id"`
+
+	// NotModified is set to true if the response indicated not modified when a
+	// `If-None-Match` or `If-Modified-Since` header was passed in.
+	NotModified bool `json:"-"`
+
+	ObjectType WKObjectType `json:"object"`
+	URL        string       `json:"url"`
 }
 
 // PageObject contains the common fields of every list resource in the WaniKani
@@ -439,6 +445,17 @@ type PageObject struct {
 		PerPage     int    `json:"per_page"`
 		PreviousURL string `json:"previous_url"`
 	} `json:"pages"`
+}
+
+// Params contains the common fields of every resource in the WaniKani API.
+type Params struct {
+	// IfModifiedSince sets a value for the `If-Modified-Since` header so that
+	// a response is conditional on an update since the last given time.
+	IfModifiedSince *time.Time
+
+	// IfNoneMatch sets a value for the `If-None-Match` header so that a
+	// response is conditional on an update since the last given Etag.
+	IfNoneMatch *string
 }
 
 // RecordedRequest is a request recorded when RecordMode is on.

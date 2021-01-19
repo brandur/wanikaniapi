@@ -63,6 +63,7 @@ type AssignmentData struct {
 }
 
 type AssignmentGetParams struct {
+	*Params
 	ID *WKID
 }
 
@@ -154,6 +155,7 @@ type AssignmentPage struct {
 }
 
 type AssignmentStartParams struct {
+	*Params
 	ID        *WKID   `json:"-"`
 	StartedAt *WKTime `json:"started_at"`
 }

@@ -59,6 +59,7 @@ type ReviewStatisticData struct {
 }
 
 type ReviewStatisticGetParams struct {
+	*Params
 	ID *WKID
 }
 

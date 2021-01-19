@@ -53,6 +53,7 @@ type LevelProgressionData struct {
 }
 
 type LevelProgressionGetParams struct {
+	*Params
 	ID *WKID
 }
 

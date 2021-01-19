@@ -194,6 +194,7 @@ type SubjectVocabularyReading struct {
 }
 
 type SubjectGetParams struct {
+	*Params
 	ID *WKID
 }
 

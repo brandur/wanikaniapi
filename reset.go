@@ -50,6 +50,7 @@ type ResetData struct {
 }
 
 type ResetGetParams struct {
+	*Params
 	ID *WKID
 }
 

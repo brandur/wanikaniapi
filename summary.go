@@ -42,6 +42,7 @@ type SummaryData struct {
 }
 
 type SummaryGetParams struct {
+	*Params
 }
 
 type SummaryLesson struct {

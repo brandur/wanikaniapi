@@ -60,6 +60,7 @@ type SpacedRepetitionSystemStagedObject struct {
 }
 
 type SpacedRepetitionSystemGetParams struct {
+	*Params
 	ID *WKID
 }
 
