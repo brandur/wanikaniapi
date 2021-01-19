@@ -94,7 +94,7 @@ type Client struct {
 	RecordMode bool
 
 	RecordedRequests  []*RecordedRequest
-	RecordedResponses [][]byte
+	RecordedResponses []*RecordedResponse
 
 	baseURL    string
 	httpClient *http.Client
@@ -218,7 +218,11 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 
 		statusCode = http.StatusOK
 		if len(c.RecordedResponses) > 0 {
-			respBytes, c.RecordedResponses = c.RecordedResponses[0], c.RecordedResponses[1:]
+			var resp *RecordedResponse
+			resp, c.RecordedResponses = c.RecordedResponses[0], c.RecordedResponses[1:]
+
+			respBytes = resp.Body
+			statusCode = resp.StatusCode
 		}
 		if respBytes == nil {
 			respBytes = []byte("{}")
@@ -328,12 +332,19 @@ type PageObject struct {
 	} `json:"pages"`
 }
 
+// RecordedRequest is a request recorded when RecordMode is on.
 type RecordedRequest struct {
 	Body   []byte
 	Header http.Header
 	Method string
 	Path   string
 	Query  string
+}
+
+// RecordedResponse is a reponse injected when RecordMode is on.
+type RecordedResponse struct {
+	Body       []byte
+	StatusCode int
 }
 
 // WKID represents a WaniKani API identifier.

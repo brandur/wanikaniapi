@@ -2,6 +2,7 @@ package wanikaniapi_test
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
@@ -13,8 +14,8 @@ import (
 func TestPageFullyLocal(t *testing.T) {
 	client := wktesting.LocalClient()
 
-	client.RecordedResponses = [][]byte{
-		[]byte(`{
+	client.RecordedResponses = []*wanikaniapi.RecordedResponse{
+		{StatusCode: http.StatusOK, Body: []byte(`{
 			"pages": {
 				"per_page": 1000,
 				"next_url": "https://api.wanikani.com/v2/subjects?page_after_id=125",
@@ -25,8 +26,8 @@ func TestPageFullyLocal(t *testing.T) {
 				{"id": 124, "object": "kanji"},
 				{"id": 125, "object": "kanji"}
 			]
-		}`),
-		[]byte(`{
+		}`)},
+		{StatusCode: http.StatusOK, Body: []byte(`{
 			"pages": {
 				"per_page": 1000,
 				"next_url": "https://api.wanikani.com/v2/subjects?page_after_id=128",
@@ -37,8 +38,8 @@ func TestPageFullyLocal(t *testing.T) {
 				{"id": 127, "object": "kanji"},
 				{"id": 128, "object": "kanji"}
 			]
-		}`),
-		[]byte(`{
+		}`)},
+		{StatusCode: http.StatusOK, Body: []byte(`{
 			"pages": {
 				"per_page": 1000,
 				"next_url": "https://api.wanikani.com/v2/subjects?page_after_id=129",
@@ -49,7 +50,7 @@ func TestPageFullyLocal(t *testing.T) {
 				{"id": 130, "object": "kanji"},
 				{"id": 131, "object": "kanji"}
 			]
-		}`),
+		}`)},
 	}
 
 	var subjects []*wanikaniapi.Subject
