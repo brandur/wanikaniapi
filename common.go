@@ -248,7 +248,7 @@ func (c *Client) request(method, path, query string, reqData interface{}, respDa
 			return fmt.Errorf("error unmarshaling error response: %v", err)
 		}
 
-		return apiErr
+		return &apiErr
 	}
 
 	err = json.Unmarshal(respBytes, respData)

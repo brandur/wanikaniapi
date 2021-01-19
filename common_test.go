@@ -11,6 +11,24 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
+func TestClientError(t *testing.T) {
+	client := wktesting.LocalClient()
+
+	client.RecordedResponses = []*wanikaniapi.RecordedResponse{
+		{StatusCode: http.StatusTooManyRequests, Body: []byte(`{
+			"code": 429,
+			"error": "You are rate limited"
+		}`)},
+	}
+
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+
+	assert.Equal(t, &wanikaniapi.APIError{
+		Code: http.StatusTooManyRequests,
+		Message: "You are rate limited",
+	}, err)
+}
+
 func TestPageFullyLocal(t *testing.T) {
 	client := wktesting.LocalClient()
 
