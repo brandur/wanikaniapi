@@ -56,7 +56,7 @@ type Reset struct {
 
 // ResetData contains core data of Reset.
 type ResetData struct {
-	ConfirmedAt  *time.Time `json:"confirmed_at"`
+	ConfirmedAt   *time.Time `json:"confirmed_at"`
 	CreatedAt     time.Time  `json:"created_at"`
 	OriginalLevel int        `json:"original_evel"`
 	TargetLevel   int        `json:"target_level"`
