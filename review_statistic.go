@@ -15,12 +15,15 @@ import (
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// ReviewStatisticGet retrieves a specific review statistic by its ID.
 func (c *Client) ReviewStatisticGet(params *ReviewStatisticGetParams) (*ReviewStatistic, error) {
 	obj := &ReviewStatistic{}
 	err := c.request("GET", "/v2/review_statistics/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
+// ReviewStatisticList returns a collection of all review statistics, ordered
+// by ascending CreatedAt, 500 at a time.
 func (c *Client) ReviewStatisticList(params *ReviewStatisticListParams) (*ReviewStatisticPage, error) {
 	obj := &ReviewStatisticPage{}
 	err := c.request("GET", "/v2/review_statistics", params, nil, obj)
@@ -37,11 +40,19 @@ func (c *Client) ReviewStatisticList(params *ReviewStatisticListParams) (*Review
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// ReviewStatistic summarizes the activity recorded in reviews. They contain
+// sum the number of correct and incorrect answers for both meaning and
+// reading. They track current and maximum streaks of correct answers. They
+// store the overall percentage of correct answers versus total answers.
+//
+// A review statistic is created when the user has done their first review on
+// the related subject.
 type ReviewStatistic struct {
 	Object
 	Data *ReviewStatisticData `json:"data"`
 }
 
+// ReviewStatisticData contains core data of ReviewStatistic.
 type ReviewStatisticData struct {
 	CreatedAt            time.Time    `json:"created_at"`
 	Hidden               bool         `json:"hidden"`
@@ -58,11 +69,13 @@ type ReviewStatisticData struct {
 	SubjectType          WKObjectType `json:"subject_type"`
 }
 
+// ReviewStatisticGetParams are parameters for ReviewStatisticGet.
 type ReviewStatisticGetParams struct {
 	Params
 	ID *WKID
 }
 
+// ReviewStatisticListParams are parameters for ReviewStatisticList.
 type ReviewStatisticListParams struct {
 	ListParams
 	Params
@@ -76,6 +89,7 @@ type ReviewStatisticListParams struct {
 	UpdatedAfter           *WKTime
 }
 
+// EncodeToQuery encodes parametes to a query string.
 func (p *ReviewStatisticListParams) EncodeToQuery() string {
 	values := p.encodeToURLValues()
 
@@ -110,6 +124,7 @@ func (p *ReviewStatisticListParams) EncodeToQuery() string {
 	return values.Encode()
 }
 
+// ReviewStatisticPage represents a single page of ReviewStatistics.
 type ReviewStatisticPage struct {
 	PageObject
 	Data []*ReviewStatistic `json:"data"`

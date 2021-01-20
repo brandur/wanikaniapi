@@ -15,12 +15,15 @@ import (
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// LevelProgressionGet retrieves a specific level progression by its id.
 func (c *Client) LevelProgressionGet(params *LevelProgressionGetParams) (*LevelProgression, error) {
 	obj := &LevelProgression{}
 	err := c.request("GET", "/v2/level_progressions/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
+// LevelProgressionList returns a collection of all level progressions, ordered
+// by ascending CreatedAt, 500 at a time.
 func (c *Client) LevelProgressionList(params *LevelProgressionListParams) (*LevelProgressionPage, error) {
 	obj := &LevelProgressionPage{}
 	err := c.request("GET", "/v2/level_progressions", params, nil, obj)
@@ -37,11 +40,14 @@ func (c *Client) LevelProgressionList(params *LevelProgressionListParams) (*Leve
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// LevelProgression contains information about a user's progress through the
+// WaniKani levels.
 type LevelProgression struct {
 	Object
 	Data *LevelProgressionData `json:"data"`
 }
 
+// LevelProgressionData contains core data of LevelProgression.
 type LevelProgressionData struct {
 	AbandonedAt *time.Time `json:"abandoned_at"`
 	CompletedAt *time.Time `json:"completed_at"`
@@ -52,11 +58,13 @@ type LevelProgressionData struct {
 	UnlockedAt  *time.Time `json:"unlocked_at"`
 }
 
+// LevelProgressionGetParams are parameters for LevelProgressionGet.
 type LevelProgressionGetParams struct {
 	Params
 	ID *WKID
 }
 
+// LevelProgressionListParams are parameters for LevelProgressionList.
 type LevelProgressionListParams struct {
 	ListParams
 	Params
@@ -65,6 +73,7 @@ type LevelProgressionListParams struct {
 	UpdatedAfter *WKTime
 }
 
+// EncodeToQuery encodes parametes to a query string.
 func (p *LevelProgressionListParams) EncodeToQuery() string {
 	values := p.encodeToURLValues()
 
@@ -79,6 +88,7 @@ func (p *LevelProgressionListParams) EncodeToQuery() string {
 	return values.Encode()
 }
 
+// LevelProgressionPage represents a single page of LevelProgressions.
 type LevelProgressionPage struct {
 	PageObject
 	Data []*LevelProgression `json:"data"`

@@ -15,18 +15,23 @@ import (
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// AssignmentGet retrieves a specific assignment by its ID.
 func (c *Client) AssignmentGet(params *AssignmentGetParams) (*Assignment, error) {
 	obj := &Assignment{}
 	err := c.request("GET", "/v2/assignments/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
+// AssignmentList returns a collection of all assignments, ordered by ascending
+// CreatedAt, 500 at a time.
 func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, error) {
 	obj := &AssignmentPage{}
 	err := c.request("GET", "/v2/assignments", params, nil, obj)
 	return obj, err
 }
 
+// AssignmentStart marks the assignment as started, moving the assignment from
+// the lessons queue to the review queue. Returns the updated assignment.
 func (c *Client) AssignmentStart(params *AssignmentStartParams) (*Assignment, error) {
 	obj := &Assignment{}
 	err := c.request("POST", "/v2/assignments/"+strconv.Itoa(int(*params.ID))+"/start", params, params, obj)
@@ -43,11 +48,17 @@ func (c *Client) AssignmentStart(params *AssignmentStartParams) (*Assignment, er
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// Assignment contains information about a user's progress on a particular
+// subject, including their current state and timestamps for various progress
+// milestones. Assignments are created when a user has passed all the
+// components of the given subject and the assignment is at or below their
+// current level for the first time.
 type Assignment struct {
 	Object
 	Data *AssignmentData `json:"data"`
 }
 
+// AssignmentData contains core data of Assignment.
 type AssignmentData struct {
 	AvailableAt   *time.Time   `json:"available_at"`
 	BurnedAt      *time.Time   `json:"burned_at"`
@@ -62,11 +73,13 @@ type AssignmentData struct {
 	UnlockedAt    *time.Time   `json:"unlocked_at"`
 }
 
+// AssignmentGetParams are parameters for AssignmentGet.
 type AssignmentGetParams struct {
 	Params
 	ID *WKID
 }
 
+// AssignmentListParams are parameters for AssignmentList.
 type AssignmentListParams struct {
 	ListParams
 	Params
@@ -87,6 +100,7 @@ type AssignmentListParams struct {
 	UpdatedAfter                   *WKTime
 }
 
+// EncodeToQuery encodes parametes to a query string.
 func (p *AssignmentListParams) EncodeToQuery() string {
 	values := p.encodeToURLValues()
 
@@ -151,11 +165,13 @@ func (p *AssignmentListParams) EncodeToQuery() string {
 	return values.Encode()
 }
 
+// AssignmentPage represents a single page of Assignments.
 type AssignmentPage struct {
 	PageObject
 	Data []*Assignment `json:"data"`
 }
 
+// AssignmentStartParams are parameters for AssignmentStart.
 type AssignmentStartParams struct {
 	Params
 	ID        *WKID   `json:"-"`
