@@ -15,6 +15,9 @@ import (
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// StudyMaterialCreate creates a study material for a specific subject.
+//
+// The owner of the API key can only create one study material per subject.
 func (c *Client) StudyMaterialCreate(params *StudyMaterialCreateParams) (*StudyMaterial, error) {
 	wrapper := &studyMaterialCreateParamsWrapper{Params: params.Params, StudyMaterial: params}
 	obj := &StudyMaterial{}
@@ -22,18 +25,22 @@ func (c *Client) StudyMaterialCreate(params *StudyMaterialCreateParams) (*StudyM
 	return obj, err
 }
 
+// StudyMaterialGet retrieves a specific study material by its ID.
 func (c *Client) StudyMaterialGet(params *StudyMaterialGetParams) (*StudyMaterial, error) {
 	obj := &StudyMaterial{}
 	err := c.request("GET", "/v2/study_materials/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
 	return obj, err
 }
 
+// StudyMaterialList returns a collection of all study material, ordered by
+// ascending CreatedAt, 500 at a time.
 func (c *Client) StudyMaterialList(params *StudyMaterialListParams) (*StudyMaterialPage, error) {
 	obj := &StudyMaterialPage{}
 	err := c.request("GET", "/v2/study_materials", params, nil, obj)
 	return obj, err
 }
 
+// StudyMaterialUpdate updates a study material for a specific ID.
 func (c *Client) StudyMaterialUpdate(params *StudyMaterialUpdateParams) (*StudyMaterial, error) {
 	wrapper := &studyMaterialUpdateParamsWrapper{Params: params.Params, StudyMaterial: params}
 	obj := &StudyMaterial{}
@@ -51,11 +58,15 @@ func (c *Client) StudyMaterialUpdate(params *StudyMaterialUpdateParams) (*StudyM
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// StudyMaterial is a store of user-specific notes and synonyms for a given
+// subject. The records are created as soon as the user enters any study
+// information.
 type StudyMaterial struct {
 	Object
 	Data *StudyMaterialData `json:"data"`
 }
 
+// StudyMaterialData contains core data of StudyMaterial.
 type StudyMaterialData struct {
 	CreatedAt       time.Time    `json:"created_at"`
 	Hidden          bool         `json:"hidden"`
@@ -66,6 +77,7 @@ type StudyMaterialData struct {
 	SubjectType     WKObjectType `json:"subject_type"`
 }
 
+// StudyMaterialCreateParams are parameters for StudyMaterialCreate.
 type StudyMaterialCreateParams struct {
 	Params
 	MeaningNote     *string  `json:"meaning_note,omitempty"`
@@ -79,11 +91,13 @@ type studyMaterialCreateParamsWrapper struct {
 	StudyMaterial *StudyMaterialCreateParams `json:"study_material"`
 }
 
+// StudyMaterialGetParams are parameters for StudyMaterialGet.
 type StudyMaterialGetParams struct {
 	Params
 	ID *WKID
 }
 
+// StudyMaterialListParams are parameters for StudyMaterialList.
 type StudyMaterialListParams struct {
 	ListParams
 	Params
@@ -95,6 +109,7 @@ type StudyMaterialListParams struct {
 	UpdatedAfter *WKTime
 }
 
+// EncodeToQuery encodes parametes to a query string.
 func (p *StudyMaterialListParams) EncodeToQuery() string {
 	values := p.encodeToURLValues()
 
@@ -121,11 +136,13 @@ func (p *StudyMaterialListParams) EncodeToQuery() string {
 	return values.Encode()
 }
 
+// StudyMaterialPage represents a single page of StudyMaterials.
 type StudyMaterialPage struct {
 	PageObject
 	Data []*StudyMaterial `json:"data"`
 }
 
+// StudyMaterialUpdateParams are parameters for StudyMaterialUpdate.
 type StudyMaterialUpdateParams struct {
 	Params
 	ID              *WKID    `json:"-"`

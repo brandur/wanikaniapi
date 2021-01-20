@@ -15,7 +15,7 @@ import (
 //
 //////////////////////////////////////////////////////////////////////////////
 
-// LevelProgressionGet retrieves a specific level progression by its id.
+// LevelProgressionGet retrieves a specific level progression by its ID.
 func (c *Client) LevelProgressionGet(params *LevelProgressionGetParams) (*LevelProgression, error) {
 	obj := &LevelProgression{}
 	err := c.request("GET", "/v2/level_progressions/"+strconv.Itoa(int(*params.ID)), params, nil, obj)
