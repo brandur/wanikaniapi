@@ -234,8 +234,6 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 		url += "?" + query
 	}
 
-	c.Logger.Debugf("Requesting URL: %v (revision: %v)", url, WaniKaniRevision)
-
 	var reqBytes []byte
 	if reqData != nil {
 		var err error
@@ -282,6 +280,8 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 }
 
 func (c *Client) requestOne(method, path, query, url string, params *Params, reqBytes []byte, respObj ObjectInterface) error {
+	c.Logger.Debugf("Requesting URL: %v (revision: %v)", url, WaniKaniRevision)
+
 	var reqReader io.Reader
 	if reqBytes != nil {
 		reqReader = bytes.NewReader(reqBytes)
