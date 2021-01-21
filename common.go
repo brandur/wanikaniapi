@@ -120,8 +120,11 @@ func (e APIError) Error() string {
 
 // Client is a WaniKani API client.
 type Client struct {
+	// APIToken is the WaniKani API token to use for authentication.
 	APIToken string
-	Logger   LeveledLoggerInterface
+
+	// Logger is the logger to send logging messages to.
+	Logger LeveledLoggerInterface
 
 	// MaxRetries is the maximum number of retries for network errors and other
 	// types of error.
@@ -135,7 +138,12 @@ type Client struct {
 	// request data to RecordedRequests.
 	RecordMode bool
 
-	RecordedRequests  []*RecordedRequest
+	// RecordedRequests are requests that have been recorded when RecordMode is
+	// on. This is generally used only in tests.
+	RecordedRequests []*RecordedRequest
+
+	// RecordedResponses are responses to be injected when RecordMode is on.
+	// This is generally used only in tests.
 	RecordedResponses []*RecordedResponse
 
 	baseURL    string
@@ -421,7 +429,7 @@ type ClientConfig struct {
 	// APIToken is the WaniKani API token to use for authentication.
 	APIToken string
 
-	// Logger is the logger to send messages to.
+	// Logger is the logger to send logging messages to.
 	Logger LeveledLoggerInterface
 
 	// MaxRetries is the maximum number of retries for network errors and other
