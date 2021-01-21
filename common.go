@@ -245,13 +245,10 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 		}
 	}
 
-	fmt.Printf("params = %+v\n", params)
-
 	var err error
 	var numRetries int
 	for {
 		err = c.requestOne(method, path, query, url, params.GetParams(), reqBytes, respObj)
-		fmt.Printf("retry error = %+v\n", err)
 		if !c.retryableErr(err) {
 			break
 		}
