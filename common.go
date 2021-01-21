@@ -249,11 +249,17 @@ func (c *Client) request(method, path string, params ParamsInterface, reqData in
 	var numRetries int
 	for {
 		err = c.requestOne(method, path, query, url, params.GetParams(), reqBytes, respObj)
+		if err == nil {
+			break
+		}
 		if !c.retryableErr(err) {
+			c.Logger.Errorf("Non-retryable error: %v", err)
 			break
 		}
 
 		numRetries++
+		c.Logger.Errorf("Retryable error (retry: %v) %v", numRetries, err)
+
 		if numRetries > c.MaxRetries {
 			break
 		}
