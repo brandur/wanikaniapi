@@ -53,6 +53,5 @@ jobs:
       - name: "Check: Gofmt"
         run: scripts/check_gofmt.sh
 
-      # Skip temporarily until I can get types/fields/functions documented.
-      # - name: "Check: Golint"
-      #   run: $(go env GOPATH)/bin/golint -set_exit_status ./...
+      - name: "Check: Golint"
+        run: $(go env GOPATH)/bin/golint -set_exit_status ./...
