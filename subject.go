@@ -161,13 +161,13 @@ type SubjectVocabularyContextSentence struct {
 type SubjectVocabularyData struct {
 	SubjectCommonData
 
-	Characters           string                                 `json:"characters"`
-	ComponentSubjectIDs  []WKID                                 `json:"component_subject_ids"`
-	ContextSentences     []*SubjectVocabularyContextSentence    `json:"context_sentences"`
-	MeaningMnemonic      string                                 `json:"meaning_mnenomic"`
-	PartsOfSpeech        []string                               `json:"parts_of_speech"`
-	PronounciationAudios []SubjectVocabularyPronounciationAudio `json:"pronounciation_audios"`
-	Readings             []*SubjectVocabularyReading            `json:"subject_vocabulary_reading"`
+	Characters           string                                  `json:"characters"`
+	ComponentSubjectIDs  []WKID                                  `json:"component_subject_ids"`
+	ContextSentences     []*SubjectVocabularyContextSentence     `json:"context_sentences"`
+	MeaningMnemonic      string                                  `json:"meaning_mnenomic"`
+	PartsOfSpeech        []string                                `json:"parts_of_speech"`
+	PronounciationAudios []*SubjectVocabularyPronounciationAudio `json:"pronounciation_audios"`
+	Readings             []*SubjectVocabularyReading             `json:"subject_vocabulary_reading"`
 }
 
 type SubjectVocabularyPronounciationAudio struct {
