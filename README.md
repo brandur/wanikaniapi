@@ -424,3 +424,14 @@ Format code with:
 ``` sh
 gofmt -w -s *.go
 ```
+
+### Creating a release
+
+* Add entry and summarize changes to `CHANGELOG.md`.
+* Commit changes with message like "Bump to v0.1.0".
+* Tag with `git tag v0.1.0`.
+* Push commit and tag with `git push --tags origin master`.
+
+Make sure to follow [semantic versioning](https://semver.org/) and introduce breaking changes only across major versions. Publish as few major versions as possible though, so try not to introduce breaking changes.
+
+Major version changes will also necessitate changes in the Go import path like a bump from `/v1` to `/v2`. See [publishing Go modules](https://blog.golang.org/publishing-go-modules).
