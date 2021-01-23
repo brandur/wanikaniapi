@@ -27,17 +27,17 @@ All API requests are made through [`wanikaniapi.Client`](https://pkg.go.dev/gith
 package main
 
 import (
-    "os"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
-    ...
+	...
 }
 ```
 
@@ -49,22 +49,22 @@ Use an initialized client to make API requests:
 package main
 
 import (
-    "os"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
-    voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{})
-    if err != nil {
-        panic(err)
-    }
+	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{})
+	if err != nil {
+		panic(err)
+	}
 
-    ...
+	...
 }
 ```
 
@@ -80,25 +80,25 @@ The package provides a set of helper functions to make setting pointers easy:
 package main
 
 import (
-    "os"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
-    voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
-        IDs:          []wanikaniapi.WKID{1, 2, 3},
-        UpdatedAfter: wanikaniapi.Time(time.Now()),
-    })
-    if err != nil {
-        panic(err)
-    }
+	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
+		IDs:		  []wanikaniapi.WKID{1, 2, 3},
+		UpdatedAfter: wanikaniapi.Time(time.Now()),
+	})
+	if err != nil {
+		panic(err)
+	}
 
-    ...
+	...
 }
 ```
 
@@ -118,10 +118,10 @@ Values in API responses may be a pointer or non-pointer based on whether they're
 
 ``` go
 type LevelProgressionData struct {
-    AbandonedAt *time.Time `json:"abandoned_at"`
-    CreatedAt   time.Time  `json:"created_at"`
+	AbandonedAt *time.Time `json:"abandoned_at"`
+	CreatedAt   time.Time  `json:"created_at"`
 
-    ...
+	...
 ```
 
 `CreatedAt` always has a value and is therefore `time.Time`. `AbandonedAt` may be set or unset, and is therefore `*time.Time` instead.
@@ -134,23 +134,23 @@ List endpoints return list objects which contain only a single page worth of dat
 package main
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
-    subjects, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
-    if err != nil {
-        panic(err)
-    }
+	subjects, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+	if err != nil {
+		panic(err)
+	}
 
-    fmt.Printf("next page URL: %+v\n", subjects.Pages.NextURL)
+	fmt.Printf("next page URL: %+v\n", subjects.Pages.NextURL)
 }
 ```
 
@@ -160,36 +160,36 @@ Use the [`PageFully`](https://pkg.go.dev/github.com/brandur/wanikaniapi#Client.P
 package main
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
-    var subjects []*wanikaniapi.Subject
-    err := client.PageFully(func(id *wanikaniapi.WKID) (*wanikaniapi.PageObject, error) {
-        page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
-            ListParams: wanikaniapi.ListParams{
-                PageAfterID: id,
-            },
-        })
-        if err != nil {
-            return nil, err
-        }
+	var subjects []*wanikaniapi.Subject
+	err := client.PageFully(func(id *wanikaniapi.WKID) (*wanikaniapi.PageObject, error) {
+		page, err := client.SubjectList(&wanikaniapi.SubjectListParams{
+			ListParams: wanikaniapi.ListParams{
+				PageAfterID: id,
+			},
+		})
+		if err != nil {
+			return nil, err
+		}
 
-        subjects = append(subjects, page.Data...)
-        return &page.PageObject, nil
-    })
-    if err != nil {
-        panic(err)
-    }
+		subjects = append(subjects, page.Data...)
+		return &page.PageObject, nil
+	})
+	if err != nil {
+		panic(err)
+	}
 
-    fmt.Printf("num subjects: %v\n", len(subjects))
+	fmt.Printf("num subjects: %v\n", len(subjects))
 }
 ```
 
@@ -203,15 +203,15 @@ Configure a logger by passing a `Logger` parameter while initializing a client:
 package main
 
 import (
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		Logger: &wanikaniapi.LeveledLogger{Level: wanikaniapi.LevelDebug},
+	})
 
-    ...
+	...
 }
 ```
 
@@ -219,10 +219,10 @@ func main() {
 
 ``` go
 type LeveledLoggerInterface interface {
-    Debugf(format string, v ...interface{})
-    Errorf(format string, v ...interface{})
-    Infof(format string, v ...interface{})
-    Warnf(format string, v ...interface{})
+	Debugf(format string, v ...interface{})
+	Errorf(format string, v ...interface{})
+	Infof(format string, v ...interface{})
+	Warnf(format string, v ...interface{})
 }
 ```
 
@@ -238,28 +238,28 @@ API errors are returned as the special error struct [`*APIError`](https://pkg.go
 package main
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
-    _, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
-    if err != nil {
-        if apiErr, ok := err.(*wanikaniapi.APIError); ok {
-            fmt.Printf("WaniKani API error; status: %v, message: %s\n",
-                apiErr.StatusCode, apiErr.Message)
-        } else {
-            fmt.Printf("other error: %+v\n", err)
-        }
-    }
+	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
+	if err != nil {
+		if apiErr, ok := err.(*wanikaniapi.APIError); ok {
+			fmt.Printf("WaniKani API error; status: %v, message: %s\n",
+				apiErr.StatusCode, apiErr.Message)
+		} else {
+			fmt.Printf("other error: %+v\n", err)
+		}
+	}
 
-    ...
+	...
 }
 ```
 
@@ -273,16 +273,16 @@ Go contexts can be passed through `Params`:
 package main
 
 import (
-    "context"
-    "os"
+	"context"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
 	_, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 		Params: wanikaniapi.Params{
@@ -293,7 +293,7 @@ func main() {
 		panic(err)
 	}
 
-    ...
+	...
 }
 ```
 
@@ -307,15 +307,15 @@ Conditional requests reduce load on the server by asking for a response only whe
 package main
 
 import (
-    "os"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
 	subjects1, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
 	if err != nil {
@@ -331,7 +331,7 @@ func main() {
 		panic(err)
 	}
 
-    ...
+	...
 }
 ```
 
@@ -341,15 +341,15 @@ func main() {
 package main
 
 import (
-    "os"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken: os.Getenv("WANI_KANI_API_TOKEN"),
+	})
 
 	subjects1, err := client.SubjectList(&wanikaniapi.SubjectListParams{})
 	if err != nil {
@@ -365,7 +365,7 @@ func main() {
 		panic(err)
 	}
 
-    ...
+	...
 }
 ```
 
@@ -377,18 +377,18 @@ The client can be configured to automatically retry errors that are known to be 
 package main
 
 import (
-    "os"
+	"os"
 
-    "github.com/brandur/wanikaniapi"
+	"github.com/brandur/wanikaniapi"
 )
 
 func main() {
-    client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
-        APIToken:   os.Getenv("WANI_KANI_API_TOKEN"),
-        MaxRetries: 2,
-    })
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken:   os.Getenv("WANI_KANI_API_TOKEN"),
+		MaxRetries: 2,
+	})
 
-    ...
+	...
 }
 ```
 
