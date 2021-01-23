@@ -91,7 +91,7 @@ func main() {
 	})
 
 	voiceActors, err := client.VoiceActorList(&wanikaniapi.VoiceActorListParams{
-		IDs:		  []wanikaniapi.WKID{1, 2, 3},
+		IDs:          []wanikaniapi.WKID{1, 2, 3},
 		UpdatedAfter: wanikaniapi.Time(time.Now()),
 	})
 	if err != nil {
