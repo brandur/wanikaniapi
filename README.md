@@ -2,8 +2,6 @@
 
 A Go client for [WaniKani's API](https://docs.api.wanikani.com/).
 
-**WARNING:** This project is under active development. Most API calls work fine, but it's incomplete in some ways like error handling and documentation.
-
 ## Usage
 
 See the [full API reference on Go.dev](https://pkg.go.dev/github.com/brandur/wanikaniapi).
