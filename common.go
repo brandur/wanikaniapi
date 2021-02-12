@@ -152,7 +152,14 @@ type Client struct {
 
 // NewClient returns a new WaniKani API client.
 func NewClient(config *ClientConfig) *Client {
+	var httpClient *http.Client
 	var logger LeveledLoggerInterface
+
+	if config.HTTPClient == nil {
+		httpClient = &http.Client{}
+	} else {
+		httpClient = config.HTTPClient
+	}
 
 	if config.Logger == nil {
 		logger = &LeveledLogger{Level: LevelError}
@@ -165,7 +172,7 @@ func NewClient(config *ClientConfig) *Client {
 		Logger:   logger,
 
 		baseURL:    WaniKaniAPIURL,
-		httpClient: &http.Client{},
+		httpClient: httpClient,
 	}
 }
 
@@ -431,6 +438,10 @@ func (c *Client) retryableErr(err error) bool {
 type ClientConfig struct {
 	// APIToken is the WaniKani API token to use for authentication.
 	APIToken string
+
+	// HTTPClient is your own HTTP client. The library will otherwise use a
+	// parameter-less `&http.Client{}`, resulting in default everything.
+	HTTPClient *http.Client
 
 	// Logger is the logger to send logging messages to.
 	Logger LeveledLoggerInterface
