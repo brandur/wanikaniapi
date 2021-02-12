@@ -3,6 +3,7 @@ package wanikaniapi_test
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
@@ -108,6 +109,21 @@ func ExampleClient_handlingErrors() {
 			fmt.Printf("other error: %+v\n", err)
 		}
 	}
+}
+
+func ExampleClient_configuringHTTPClient() {
+	httpClient := &http.Client{
+		Transport: &http.Transport{
+			MaxIdleConns:       10,
+			IdleConnTimeout:    30 * time.Second,
+			DisableCompression: true,
+		},
+	}
+
+	_ = wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken:   os.Getenv("WANI_KANI_API_TOKEN"),
+		HTTPClient: httpClient,
+	})
 }
 
 func ExampleClient_contexts() {

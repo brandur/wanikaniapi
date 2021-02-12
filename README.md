@@ -265,6 +265,40 @@ func main() {
 
 API calls may still return non-`APIError` errors for non-API problems (e.g. network error, TLS error, unmarshaling error, etc.).
 
+### Configuring HTTP client
+
+Pass your own HTTP client into `wanikaniapi.NewClient`:
+
+``` go
+package main
+
+import (
+	"fmt"
+    "net/http"
+	"os"
+    "time"
+
+	"github.com/brandur/wanikaniapi"
+)
+
+func main() {
+	httpClient := &http.Client{
+		Transport: &http.Transport{
+			MaxIdleConns:       10,
+			IdleConnTimeout:    30 * time.Second,
+			DisableCompression: true,
+		},
+	}
+
+	client := wanikaniapi.NewClient(&wanikaniapi.ClientConfig{
+		APIToken:   os.Getenv("WANI_KANI_API_TOKEN"),
+		HTTPClient: httpClient,
+	})
+
+    ...
+}
+```
+
 ### Contexts
 
 Go contexts can be passed through `Params`:
