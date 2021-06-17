@@ -20,7 +20,7 @@ func main() {
 
 	subjects2, err := client.SubjectList(&wanikaniapi.SubjectListParams{
 		Params: wanikaniapi.Params{
-			IfModifiedSince: wanikaniapi.Time(subjects1.LastModified),
+			IfModifiedSince: wanikaniapi.Time(*subjects1.LastModified),
 		},
 	})
 	if err != nil {
