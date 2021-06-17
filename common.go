@@ -355,12 +355,16 @@ func (c *Client) requestOne(method, path, query, url string, params *Params, req
 		defer resp.Body.Close()
 
 		obj.ETag = resp.Header.Get("ETag")
-		obj.LastModified, err = time.Parse(
-			"Mon, 02 Jan 2006 15:04:05 MST",
-			resp.Header.Get("Last-Modified"),
-		)
-		if err != nil {
-			return fmt.Errorf("error parsing Last-Modified: %w", err)
+
+		if resp.Header.Get("Last-Modified") != "" {
+			lastModified, err := time.Parse(
+				"Mon, 02 Jan 2006 15:04:05 MST",
+				resp.Header.Get("Last-Modified"),
+			)
+			if err != nil {
+				return fmt.Errorf("error parsing Last-Modified: %w", err)
+			}
+			obj.LastModified = &lastModified
 		}
 
 		statusCode = resp.StatusCode
@@ -483,8 +487,10 @@ type Object struct {
 	ETag string `json:"-"`
 
 	// LastModified is a date that can be used to make conditional requests by
-	// passing its value to Params.IfModifiedSince for a future request.
-	LastModified time.Time `json:"-"`
+	// passing its value to Params.IfModifiedSince for a future request. It's
+	// returned on most requests, but may not be for specific parameter
+	// combinations.
+	LastModified *time.Time `json:"-"`
 
 	// NotModified is set to true if the response indicated not modified when a
 	// `If-None-Match` or `If-Modified-Since` header was passed in.
