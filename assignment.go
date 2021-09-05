@@ -30,6 +30,14 @@ func (c *Client) AssignmentList(params *AssignmentListParams) (*AssignmentPage, 
 	return obj, err
 }
 
+// AssignmentResurrect marks the assignment as started, moving the assignment from
+// the lessons queue to the review queue. Returns the updated assignment.
+func (c *Client) AssignmentResurrect(params *AssignmentResurrectParams) (*Assignment, error) {
+	obj := &Assignment{}
+	err := c.request("PUT", "/v2/assignments/"+strconv.Itoa(int(*params.ID))+"/resurrect", params, params, obj)
+	return obj, err
+}
+
 // AssignmentStart marks the assignment as started, moving the assignment from
 // the lessons queue to the review queue. Returns the updated assignment.
 func (c *Client) AssignmentStart(params *AssignmentStartParams) (*Assignment, error) {
@@ -169,6 +177,12 @@ func (p *AssignmentListParams) EncodeToQuery() string {
 type AssignmentPage struct {
 	PageObject
 	Data []*Assignment `json:"data"`
+}
+
+// AssignmentResurrectParams are parameters for AssignmentResurrect.
+type AssignmentResurrectParams struct {
+	Params
+	ID *WKID `json:"-"`
 }
 
 // AssignmentStartParams are parameters for AssignmentStart.
