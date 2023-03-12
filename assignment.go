@@ -96,6 +96,7 @@ type AssignmentListParams struct {
 	SRSStages                      []int
 	Started                        *bool
 	SubjectIDs                     []WKID
+	SubjectTypes                   []WKObjectType `json:"subject_types"`
 	Unlocked                       *bool
 	UpdatedAfter                   *WKTime
 }
@@ -156,6 +157,10 @@ func (p *AssignmentListParams) EncodeToQuery() string {
 
 	if p.SubjectIDs != nil {
 		values.Add("subject_ids", joinIDs(p.SubjectIDs, ","))
+	}
+
+	if p.SubjectTypes != nil {
+		values.Add("subject_types", joinObjectTypes(p.SubjectTypes, ","))
 	}
 
 	if p.UpdatedAfter != nil {
