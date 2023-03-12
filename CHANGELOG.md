@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.4.0 -- 2023-03-12
+
+* Add `AssignmentListParams.SubjectTypes`
+
 ## v0.3.0 -- 2021-06-16
 
 * Change `Object.LastModified` to a conditionally set pointer
